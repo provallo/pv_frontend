@@ -2,7 +2,13 @@
 
 namespace ProVallo\Plugins\Frontend;
 
+use Favez\Mvc\Event\Arguments;
+use Favez\Mvc\View\View;
 use ProVallo\Core;
+use ProVallo\Plugins\Frontend\Components\Menu;
+use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
 {
@@ -26,8 +32,35 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         // Register routes
         Core::instance()->get('/', 'frontend:Index:index');
     
+        Core::instance()->getContainer()['notFoundHandler'] = function() {
+            return function (Request $request, Response $response) {
+                $result = Core::instance()->dispatcher()->dispatch('frontend:Index:index', []);
+                
+                if (!($result instanceof Response))
+                {
+                    $response->getBody()->write($result);
+                    
+                    return $response;
+                }
+                
+                return $result;
+            };
+        };
+    
+    
         // Register all frontend controllers
         $this->registerController('Frontend', 'Index');
+    
+        // Register custom services
+        Core::di()->registerShared('frontend.menu', function() {
+            return new Menu();
+        });
+        
+        // Register view extensions
+        Core::events()->subscribe('core.view.init', function (Arguments $args) {
+            $view = $args->get(0);
+            $view->engine()->addExtension(new MenuExtension());
+        });
     }
     
     protected function registerCustomTheme($path, $name = 'default')
