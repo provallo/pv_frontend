@@ -1,0 +1,7 @@
+{
+  "name": "pv_backend",
+  "scripts": {
+    "publish": "node scripts/publish",
+    "build": "sh Views/compile.sh"
+  }
+}

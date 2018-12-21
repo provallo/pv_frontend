@@ -1,0 +1,16 @@
+{
+  "packageID": "pv_frontend",
+  "name": "pv_frontend",
+  "label": "Frontend",
+  "description": "The basic frontend supporting simple pages.",
+  "author": "tyurderi",
+  "website": "https://www.yurderi.de",
+  "email": "tyurderi@yahoo.de",
+  "version": "1.0.0",
+  
+  "changelog": {
+    "1.0.0": [
+      "Add default theme"
+    ]
+  }
+}
