@@ -7,7 +7,6 @@
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
   "version": "1.0.2",
-  
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -21,8 +20,11 @@
       "Implement backend view"
     ]
   },
-  
   "requires": {
     "Backend": "1.0.6"
+  },
+  "package": {
+    "channel": "stable",
+    "platform": "provallo-plugin"
   }
 }
