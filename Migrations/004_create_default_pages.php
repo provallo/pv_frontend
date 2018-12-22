@@ -10,9 +10,10 @@ class Migration_4 extends Migration
     public function up ()
     {
         $this->addSQL('
-            INSERT INTO `page` (parentID, active, route, main, label, type, `data`, position) VALUES
-              (-1, 1, "/", 1, "Home", 1, "Hello Home", 1),
-              (-1, 1, "/projects", 1, "Projects", 1, "Hello Projects", 2);
+            INSERT INTO `page` (parentID, active, route, label, type, `data`, position) VALUES
+              (-1, 1, "/", 1, "Home", "Hello Home", 1),
+              (-1, 1, "/projects", 0, "Projects", "Hello Projects", 2),
+              (-1, 1, "https://github.com/provallo", "GitHub", 2, null, 3);
         ');
     }
     

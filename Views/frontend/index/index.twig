@@ -20,7 +20,7 @@
 
             {% for item in items %}
             <li{% if item.id == page.id %} class="active"{% endif %}>
-                <a href="{{ url(item.route) }}">
+                <a href="{{ url(item.route.link) }}" target="{{ item.route.target }}">
                     {{ item.label }}
                 </a>
             </li>

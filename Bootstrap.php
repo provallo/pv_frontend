@@ -50,6 +50,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     
         // Register all frontend controllers
         $this->registerController('Frontend', 'Index');
+        $this->registerController('Backend', 'Page');
     
         // Register custom services
         Core::di()->registerShared('frontend.menu', function() {
@@ -61,6 +62,13 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             $view = $args->get(0);
             $view->engine()->addExtension(new MenuExtension());
         });
+        
+        // Register backend extensions
+        Core::events()->subscribe('backend.register', function () {
+            return [
+                $this
+            ];
+        });
     }
     
     protected function registerCustomTheme($path, $name = 'default')
@@ -69,9 +77,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         
         if (!is_link($directory))
         {
-            var_dump($path, $directory);
-            
-            return link($path, $directory);
+            return symlink($path, $directory);
         }
         
         return true;

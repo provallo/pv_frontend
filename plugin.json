@@ -14,6 +14,15 @@
     ],
     "1.0.1": [
       "Create default pages and show them in frontend"
+    ],
+    "1.0.2": [
+      "Add support for external links",
+      "Add requirement for pv_backend >= 1.0.6",
+      "Implement backend view"
     ]
+  },
+  
+  "requires": {
+    "Backend": "1.0.6"
   }
 }

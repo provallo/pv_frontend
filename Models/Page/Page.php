@@ -9,6 +9,10 @@ class Page extends Entity
     
     const SOURCE = 'page';
     
+    const TYPE_CONTENT = 1;
+    
+    const TYPE_LINK_EXTERNAL = 2;
+    
     public $id;
     
     public $parentID;
@@ -16,8 +20,6 @@ class Page extends Entity
     public $active;
     
     public $route;
-    
-    public $main;
     
     public $label;
     

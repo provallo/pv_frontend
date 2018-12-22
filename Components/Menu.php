@@ -26,13 +26,34 @@ class Menu
             $result[] = [
                 'id'       => $item->id,
                 'label'    => $item->label,
-                'route'    => ltrim($item->route, '/'),
+                'route'    => $this->getRoute($item),
                 'position' => $item->position,
                 'items'    => $this->buildMenu($item->id)
             ];
         }
         
         return $result;
+    }
+    
+    protected function getRoute (Page $page)
+    {
+        switch ($page->type)
+        {
+            case Page::TYPE_CONTENT:
+                return [
+                    'link'   => ltrim($page->route, '/'),
+                    'target' => '_self'
+                ];
+            break;
+            case Page::TYPE_LINK_EXTERNAL:
+                return [
+                    'link'   => 'frontend/index/openLink?url=' . $page->route,
+                    'target' => '_blank'
+                ];
+            break;
+            default:
+                return null;
+        }
     }
     
 }

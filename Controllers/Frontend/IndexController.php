@@ -22,6 +22,13 @@ class IndexController extends Controller
         ]);
     }
     
+    public function openLinkAction ()
+    {
+        $url = self::request()->getParam('url');
+        
+        return self::response()->withRedirect($url);
+    }
+    
     protected function getPage ()
     {
         $path = self::request()->getUri()->getPath();
