@@ -26,7 +26,7 @@ class PageController extends API
     {
         $entity->changed = date('Y-m-d H:i:s');
         
-        $entity->parentID = $input['parentID'];
+        $entity->parentID = -1;
         $entity->active   = (int) $input['active'];
         $entity->route    = $input['route'];
         $entity->label    = $input['label'];
