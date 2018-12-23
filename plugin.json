@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -27,6 +27,9 @@
     ],
     "1.0.5": [
       "Integrate javascript and less bundles"
+    ],
+    "1.0.6": [
+      "Fix view extension loading"
     ]
   },
   "requires": {

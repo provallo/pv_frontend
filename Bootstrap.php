@@ -60,8 +60,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         
         // Register view extensions
         Core::events()->subscribe('core.view.init', function (Arguments $args) {
+            /** @var View $view */
             $view = $args->get(0);
             $view->engine()->addExtension(new MenuExtension());
+            $view->engine()->addExtension(new \Twig_Extension_StringLoader());
         });
         
         // Register backend extensions
