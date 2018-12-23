@@ -86,6 +86,9 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 new FrontendBuildCommand()
             ];
         });
+        
+        // Register composer dependencies
+        require_once __DIR__ . '/vendor/autoload.php';
     }
     
     protected function registerCustomTheme($path, $name = 'default')

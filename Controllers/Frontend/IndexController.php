@@ -39,10 +39,14 @@ class IndexController extends Controller
         
         if ($page instanceof Page)
         {
+            $parser = new \Parsedown();
+            $parser->setSafeMode(true);
+            $html   = $parser->parse($page->data);
+            
             return [
                 'id'    => $page->id,
                 'title' => $page->label,
-                'html'  => $page->data
+                'html'  => $html
             ];
         }
         
