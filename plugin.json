@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -24,6 +24,9 @@
     ],
     "1.0.4": [
       "New vendor integration"
+    ],
+    "1.0.5": [
+      "Integrate javascript and less bundles"
     ]
   },
   "requires": {

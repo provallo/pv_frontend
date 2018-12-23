@@ -28,8 +28,10 @@
         </ul>
     </div>
     <div class="content">
-        {{ page.html }}
+        {% include template_from_string(page.html) %}
     </div>
+
+    <script type="text/javascript" src="{{ resource_url('js/all.js') }}"></script>
 </div>
 
 </body>

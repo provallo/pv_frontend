@@ -3,3 +3,5 @@ node_modules
 /releases
 /.git
 /.savas
+/Views/_resources/js/all.js
+/Views/_resources/css/all.css

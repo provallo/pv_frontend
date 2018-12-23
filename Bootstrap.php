@@ -5,6 +5,7 @@ namespace ProVallo\Plugins\Frontend;
 use Favez\Mvc\Event\Arguments;
 use Favez\Mvc\View\View;
 use ProVallo\Core;
+use ProVallo\Plugins\Frontend\Commands\FrontendBuildCommand;
 use ProVallo\Plugins\Frontend\Components\Menu;
 use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
 use Slim\Http\Request;
@@ -67,6 +68,20 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         Core::events()->subscribe('backend.register', function () {
             return [
                 $this
+            ];
+        });
+    
+        // Register frontend resources
+        Core::events()->subscribe('frontend.register.less', function () {
+            return [
+                path($this->getPath(), 'Views/_resources/less/all.less')
+            ];
+        });
+        
+        // Register custom console commands
+        Core::events()->subscribe('console.register', function () {
+            return [
+                new FrontendBuildCommand()
             ];
         });
     }
