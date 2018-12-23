@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -33,6 +33,9 @@
     ],
     "1.0.7": [
       "Support markdown in page content"
+    ],
+    "1.0.8": [
+      "Improving default design"
     ]
   },
   "requires": {
