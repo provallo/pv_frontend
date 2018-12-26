@@ -82,7 +82,7 @@
                         {{ editingModel.label }}
                     </div>
                     <ul class="header-actions">
-                        <li>
+                        <li @click="loadPreview">
                             <fa icon="sync-alt"></fa>
                         </li>
                     </ul>
