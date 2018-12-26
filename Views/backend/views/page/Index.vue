@@ -117,7 +117,7 @@ export default {
                 { id: 2, label: 'External Link' }
             ],
             
-            isFullSize: true
+            isFullSize: false
         }
     },
     computed: {
