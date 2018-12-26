@@ -54,7 +54,7 @@
                             (<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> & <a href="https://twig.symfony.com/" target="_blank">Twig</a> is supported)
                         </small>
                     </label>
-                    <v-input type="textarea" id="content" v-model="editingModel.data"  :style="{ width: formWidth }" @keydown.enter.prevent="isFullSize = false"></v-input>
+                    <v-input type="textarea" id="content" v-model="editingModel.data"  :style="{ width: formWidth }"></v-input>
                     
                     <fa icon="times" class="full-size-content" v-if="isFullSize" @click="isFullSize = false"></fa>
                     <fa icon="expand-arrows-alt" class="full-size-content" v-else @click="isFullSize = true"></fa>
