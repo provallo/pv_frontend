@@ -5,3 +5,4 @@ node_modules
 /.savas
 /Views/_resources/js/all.js
 /Views/_resources/css/all.css
+/Views/_resources/timestamp.txt

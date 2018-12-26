@@ -34,7 +34,7 @@ class FrontendBuildCommand extends Command
         
         file_put_contents($targetFilename, $css);
         
-        $output->writeln('===== BUILDING JS ====');
+        $output->writeln('===== BUILDING JS =====');
         $targetFilename = path(__DIR__, '../Views/_resources/js/all.js');
         $javascript = '';
         
@@ -46,6 +46,13 @@ class FrontendBuildCommand extends Command
         }
         
         file_put_contents($targetFilename, $javascript);
+        
+        $output->writeln('===== UPDATING TIMESTAMP =====');
+        $targetFilename = path(__DIR__, '../Views/_resources/timestamp.txt');
+        
+        file_put_contents($targetFilename, time());
+        
+        $output->writeln($targetFilename);
     }
     
 }

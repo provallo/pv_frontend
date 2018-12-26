@@ -89,6 +89,9 @@
                 </div>
                 
                 <iframe frameborder="0" ref="frame"></iframe>
+                <div class="loading-container" :class="{ 'is--hidden': !isLoadingPreview }">
+                    <fa icon="spinner" spin></fa>
+                </div>
             </div>
         </v-detail>
     </div>
@@ -117,7 +120,8 @@ export default {
                 { id: 2, label: 'External Link' }
             ],
             
-            isFullSize: false
+            isFullSize: false,
+            isLoadingPreview: false
         }
     },
     computed: {
@@ -205,8 +209,11 @@ export default {
             }
             
             me.interval = setTimeout(() => {
+                me.isLoadingPreview = true
+                
                 me.$http.post('backend/page/preview', me.editingModel).then(response => response.data).then(response => {
                     me.$refs.frame.src = 'data:text/html;charset=utf-8,' + escape(response)
+                    me.isLoadingPreview = false
                 })
             }, 250)
         }

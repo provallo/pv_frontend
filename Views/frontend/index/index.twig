@@ -4,7 +4,7 @@
     <title>{{ page.title }}</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-    <link rel="stylesheet" href="{{ resource_url('css/all.css') }}">
+    <link rel="stylesheet" href="{{ resource_url('css/all.css') }}?_bc={{ timestamp }}">
 
     <meta name=viewport content="width=device-width, initial-scale=1">
 </head>
@@ -31,7 +31,7 @@
         {% include template_from_string(page.html) %}
     </div>
 
-    <script type="text/javascript" src="{{ resource_url('js/all.js') }}"></script>
+    <script type="text/javascript" src="{{ resource_url('js/all.js') }}?_bc={{ timestamp }}"></script>
 </div>
 
 </body>

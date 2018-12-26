@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -40,6 +40,10 @@
     "1.0.9": [
       "Implement live-preview",
       "Small improvements of frontend-design"
+    ],
+    "1.1.0": [
+      "Add loading spinner for preview",
+      "Add cache-buster for theme files (less & js)"
     ]
   },
   "requires": {

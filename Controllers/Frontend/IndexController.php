@@ -18,7 +18,8 @@ class IndexController extends Controller
         }
         
         return self::view()->render('frontend/index/index', [
-            'page' => $page
+            'page'      => $page,
+            'timestamp' => $this->getTimestamp()
         ]);
     }
     
@@ -45,6 +46,23 @@ class IndexController extends Controller
         return self::view()->render('frontend/index/index', [
             'page' => $page
         ]);
+    }
+    
+    protected function getTimestamp ()
+    {
+        $filename  = path(self::path(), 'ext/Frontend/Views/_resources/timestamp.txt');
+        $timestamp = time();
+        
+        if (is_file($filename))
+        {
+            $timestamp = (int) file_get_contents($filename);
+        }
+        else
+        {
+            file_put_contents($filename, $timestamp);
+        }
+        
+        return $timestamp;
     }
     
     protected function getPage ()
