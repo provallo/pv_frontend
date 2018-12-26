@@ -132,13 +132,6 @@ export default {
         }
     },
     watch: {
-        'editingModel.label' (value, oldValue) {
-            let me = this
-            
-            if (oldValue && value !== oldValue) {
-                me.loadPreview()
-            }
-        },
         'editingModel.data' (value, oldValue) {
             let me = this
     
