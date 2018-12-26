@@ -38,7 +38,8 @@
       "Improving default design"
     ],
     "1.0.9": [
-      "Implement live-preview"
+      "Implement live-preview",
+      "Small improvements of frontend-design"
     ]
   },
   "requires": {
