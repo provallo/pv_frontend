@@ -29,6 +29,24 @@ class IndexController extends Controller
         return self::response()->withRedirect($url);
     }
     
+    public function previewAction ()
+    {
+        $data = self::request()->getParams();
+        $page = [
+            'id'    => $data['id'],
+            'title' => $data['label'],
+            'html'  => $data['data']
+        ];
+        
+        $parser = new \Parsedown();
+        $parser->setSafeMode(true);
+        $page['html'] = $parser->parse($page['html']);
+        
+        return self::view()->render('frontend/index/index', [
+            'page' => $page
+        ]);
+    }
+    
     protected function getPage ()
     {
         $path = self::request()->getUri()->getPath();

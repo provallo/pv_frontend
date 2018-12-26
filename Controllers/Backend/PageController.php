@@ -35,4 +35,18 @@ class PageController extends API
         $entity->position = $input['position'];
     }
     
+    public function previewAction ()
+    {
+        try
+        {
+            $html = self::forward('preview', 'Index', 'frontend');
+        }
+        catch (\Exception $ex)
+        {
+            return $ex->getMessage();
+        }
+        
+        return $html;
+    }
+    
 }

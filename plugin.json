@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -36,6 +36,9 @@
     ],
     "1.0.8": [
       "Improving default design"
+    ],
+    "1.0.9": [
+      "Implement live-preview"
     ]
   },
   "requires": {

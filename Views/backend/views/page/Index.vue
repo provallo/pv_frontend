@@ -18,7 +18,7 @@
         <v-detail :disabled="!editingModel">
             <v-form v-if="editingModel"
                     @submit="submit" :buttons="formButtons"
-                    :style="{ maxWidth: '500px' }"
+                    :style="{ width: '500px' }"
                     ref="form">
                 <div class="form-item" v-if="editingModel.id > 0">
                     <label for="id">
@@ -35,23 +35,11 @@
                     </label>
                     <v-input type="text" id="parentID" v-model="editingModel.parentID"></v-input>
                 </div>
-                <div class="form-item">
+                 <div class="form-item">
                     <label for="label">
                         Label
                     </label>
                     <v-input type="text" id="label" v-model="editingModel.label"></v-input>
-                </div>
-                <div class="form-item">
-                    <label for="content">
-                        Content
-                    </label>
-                    <v-input type="textarea" id="content" v-model="editingModel.data"></v-input>
-                </div>
-                <div class="form-item">
-                    <label for="position">
-                        Position
-                    </label>
-                    <v-input type="number" id="position" v-model="editingModel.position"></v-input>
                 </div>
                 <div class="form-item">
                     <label for="type">
@@ -59,14 +47,49 @@
                     </label>
                     <v-select id="type" :data="types" displayField="label" valueField="id" v-model="editingModel.type"></v-select>
                 </div>
+                <div class="form-item is--data" v-if="editingModel.type === 1" :class="{ 'full-size': isFullSize }">
+                    <label for="content">
+                        Content
+                        <small>
+                            (<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> & <a href="https://twig.symfony.com/" target="_blank">Twig</a> is supported)
+                        </small>
+                    </label>
+                    <v-input type="textarea" id="content" v-model="editingModel.data"  :style="{ width: formWidth }" @keydown.enter.prevent="isFullSize = false"></v-input>
+                    
+                    <fa icon="times" class="full-size-content" v-if="isFullSize" @click="isFullSize = false"></fa>
+                    <fa icon="expand-arrows-alt" class="full-size-content" v-else @click="isFullSize = true"></fa>
+                </div>
                 <div class="form-item">
-                    <label for="route">
+                    <label for="route" v-if="editingModel.type === 1">
                         Route
+                    </label>
+                    <label for="route" v-else>
+                        URL
                     </label>
                     <v-input type="text" id="route" v-model="editingModel.route"></v-input>
                 </div>
-                <div class="form-item"></div>
+                <div class="form-item">
+                    <label for="position">
+                        Position
+                    </label>
+                    <v-input type="number" id="position" v-model="editingModel.position"></v-input>
+                </div>
             </v-form>
+            <div class="page-preview" v-if="editingModel && editingModel.type === 1" ref="preview">
+                <div class="preview-header">
+                    <div class="header-title">
+                        Preview:
+                        {{ editingModel.label }}
+                    </div>
+                    <ul class="header-actions">
+                        <li>
+                            <fa icon="sync-alt"></fa>
+                        </li>
+                    </ul>
+                </div>
+                
+                <iframe frameborder="0" ref="frame"></iframe>
+            </div>
         </v-detail>
     </div>
 </template>
@@ -92,7 +115,36 @@ export default {
             types: [
                 { id: 1, label: 'Content (default)' },
                 { id: 2, label: 'External Link' }
-            ]
+            ],
+            
+            isFullSize: true
+        }
+    },
+    computed: {
+        formWidth () {
+            let me = this
+    
+            if (me.isFullSize && me.$refs.preview) {
+                return me.$refs.preview.offsetLeft + 'px'
+            }
+            
+            return 'auto'
+        }
+    },
+    watch: {
+        'editingModel.label' (value, oldValue) {
+            let me = this
+            
+            if (oldValue && value !== oldValue) {
+                me.loadPreview()
+            }
+        },
+        'editingModel.data' (value, oldValue) {
+            let me = this
+    
+            if (oldValue && value !== oldValue) {
+                me.loadPreview()
+            }
         }
     },
     methods: {
@@ -106,7 +158,10 @@ export default {
             let me = this
             
             me.editingModel = model
-            me.$nextTick(() => me.$refs.form.reset())
+            me.$nextTick(() => {
+                me.$refs.form.reset()
+                me.loadPreview()
+            })
         },
         submit ({ setMessage, setLoading, setProgress }) {
             let me = this
@@ -142,12 +197,25 @@ export default {
                     me.$swal({
                         type: 'error',
                         title: 'Sorry!',
-                        text: 'Unfortunately you are not allowed to delete this page    .'
+                        text: 'Unfortunately you are not allowed to delete this page.'
                     })
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+        loadPreview () {
+            let me = this
+            
+            if (me.interval) {
+                clearTimeout(me.interval)
+            }
+            
+            me.interval = setTimeout(() => {
+                me.$http.post('backend/page/preview', me.editingModel).then(response => response.data).then(response => {
+                    me.$refs.frame.src = 'data:text/html;charset=utf-8,' + escape(response)
+                })
+            }, 250)
         }
     }
 }

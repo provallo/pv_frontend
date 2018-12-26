@@ -10,4 +10,6 @@ export default function () {
     ])
     
     ProVallo.$models.page = createModel(require('./models/page').default)
+    
+    require('./assets/less/all.less')
 }
