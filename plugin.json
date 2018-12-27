@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -44,6 +44,10 @@
     "1.1.0": [
       "Add loading spinner for preview",
       "Add cache-buster for theme files (less & js)"
+    ],
+    "1.1.1": [
+      "Add several blocks",
+      "Add github-corner"
     ]
   },
   "requires": {

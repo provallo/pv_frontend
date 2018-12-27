@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ page.title }}</title>
+    {% block title %}
+        <title>{{ page.title }}</title>
+    {% endblock %}
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-    <link rel="stylesheet" href="{{ resource_url('css/all.css') }}?_bc={{ timestamp }}">
+    {% block css %}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+        <link rel="stylesheet" href="{{ resource_url('css/all.css') }}?_bc={{ timestamp }}">
+    {% endblock %}
 
-    <meta name=viewport content="width=device-width, initial-scale=1">
+    {% block meta %}
+        <meta name=viewport content="width=device-width, initial-scale=1">
+    {% endblock %}
 </head>
 <body>
 
-<div class="app">
-    <div class="header">
-        <div class="logo">
-            <img src="{{ url('/src/Resources/public/img/logo.svg') }}" alt="">
-        </div>
-        <ul class="menu">
-            {% set items = getMenu() %}
+{% block github_corner %}
+    {% include 'frontend/index/github_corner.twig' %}
+{% endblock %}
 
-            {% for item in items %}
-            <li{% if item.id == page.id %} class="active"{% endif %}>
-                <a href="{{ url(item.route.link) }}" target="{{ item.route.target }}">
-                    {{ item.label }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="content">
-        {% include template_from_string(page.html) %}
-    </div>
+{% block app %}
+    <div class="app">
+        {% block app_header %}
+            <div class="header">
+                {% block app_header_logo %}
+                    <div class="logo">
+                        <img src="{{ url('/src/Resources/public/img/logo.svg') }}" alt="">
+                    </div>
+                {% endblock %}
+                {% block app_header_menu %}
+                    <ul class="menu">
+                        {% set items = getMenu() %}
 
+                        {% for item in items %}
+                            <li{% if item.id == page.id %} class="active"{% endif %}>
+                            <a href="{{ url(item.route.link) }}" target="{{ item.route.target }}">
+                                {{ item.label }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+            </div>
+        {% endblock %}
+        {% block app_body %}
+            <div class="content">
+                {% include template_from_string(page.html) %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
     <script type="text/javascript" src="{{ resource_url('js/all.js') }}?_bc={{ timestamp }}"></script>
-</div>
+{% endblock %}
 
 </body>
 </html>
