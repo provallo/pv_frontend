@@ -17,7 +17,7 @@ class Menu
         $items  = Page::repository()->findBy([
             'parentID' => $parentID,
             'active'   => 1
-        ]);
+        ], 'position ASC');
         
         $result = [];
         

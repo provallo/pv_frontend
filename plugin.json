@@ -47,7 +47,8 @@
     ],
     "1.1.1": [
       "Add several blocks",
-      "Add github-corner"
+      "Add github-corner",
+      "Fix sorting of pages"
     ]
   },
   "requires": {
