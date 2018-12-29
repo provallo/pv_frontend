@@ -2,6 +2,7 @@
 
 namespace ProVallo\Plugins\Frontend\Components;
 
+use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Models\Page\Page;
 
 class Menu
@@ -16,7 +17,8 @@ class Menu
     {
         $items  = Page::repository()->findBy([
             'parentID' => $parentID,
-            'active'   => 1
+            'active'   => 1,
+            'domainID' => Core::di()->get('frontend.domain')->getCurrentDomain()->id
         ], 'position ASC');
         
         $result = [];

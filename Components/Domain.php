@@ -28,6 +28,16 @@ class Domain
     }
     
     /**
+     * In case you need to override the ID for whatever reason
+     *
+     * @param integer $id
+     */
+    public function overrideID ($id)
+    {
+        $this->domain->id = (int) $id;
+    }
+    
+    /**
      * Lookup for the correct domain, redirect if required or die when no valid
      * domain is matched
      *

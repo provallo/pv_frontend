@@ -1,5 +1,6 @@
 <template>
     <div class="is--page-view view">
+        <v-domain-selector @change="onDomainChanged" />
         <v-grid ref="grid" :config="gridConfig" @create="create">
             <div class="grid-item user" slot="item" slot-scope="{ model }"
                  :class="{ active: editingModel && editingModel.id === model.id }">
@@ -98,13 +99,24 @@
 </template>
 
 <script>
+import VDomainSelector from '../../components/DomainSelector'
+
 export default {
+    components: {
+        VDomainSelector
+    },
     data() {
         let me = this
         
         return {
             gridConfig: {
-                model: me.$models.page
+                model: me.$models.page,
+                fetchParams () {
+                    return {
+                        domainID: me.domainID
+                    }
+                },
+                autoLoad: false
             },
             formButtons: [
                 {
@@ -121,7 +133,8 @@ export default {
             ],
             
             isFullSize: false,
-            isLoadingPreview: false
+            isLoadingPreview: false,
+            domainID: null
         }
     },
     computed: {
@@ -162,6 +175,8 @@ export default {
         },
         submit ({ setMessage, setLoading, setProgress }) {
             let me = this
+            
+            me.editingModel.domainID = me.domainID
             
             setLoading(true)
             me.$models.page.save(me.editingModel).then(({ success, data, messages }) => {
@@ -204,18 +219,31 @@ export default {
         loadPreview () {
             let me = this
             
+            if (!me.editingModel) {
+                return
+            }
+            
             if (me.interval) {
                 clearTimeout(me.interval)
             }
             
             me.interval = setTimeout(() => {
                 me.isLoadingPreview = true
+                me.editingModel.domainID = me.domainID
                 
                 me.$http.post('backend/page/preview', me.editingModel).then(response => response.data).then(response => {
                     me.$refs.frame.src = 'data:text/html;charset=utf-8,' + escape(response)
                     me.isLoadingPreview = false
                 })
             }, 250)
+        },
+        onDomainChanged (domainID) {
+            let me = this
+    
+            me.domainID = domainID
+            me.editingModel = null
+            
+            me.$refs.grid.load()
         }
     }
 }

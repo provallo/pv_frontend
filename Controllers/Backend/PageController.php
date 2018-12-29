@@ -16,6 +16,14 @@ class PageController extends API
         ];
     }
     
+    protected function getListQuery ()
+    {
+        $domainID = (int) self::request()->getParam('domainID');
+        
+        return parent::getListQuery()
+            ->where('domainID = ? OR domainID = 0', $domainID);
+    }
+    
     protected function setDefaultValues (Entity $entity)
     {
         $entity->created  = date('Y-m-d H:i:s');
@@ -27,6 +35,7 @@ class PageController extends API
         $entity->changed = date('Y-m-d H:i:s');
         
         $entity->parentID = -1;
+        $entity->domainID = (int) $input['domainID'];
         $entity->active   = (int) $input['active'];
         $entity->route    = $input['route'];
         $entity->label    = $input['label'];

@@ -3,6 +3,7 @@
 namespace ProVallo\Controllers\Frontend;
 
 use ProVallo\Components\Controller;
+use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Models\Page\Page;
 
 class IndexController extends Controller
@@ -43,6 +44,8 @@ class IndexController extends Controller
         $parser->setSafeMode(true);
         $page['html'] = $parser->parse($page['html']);
         
+        Core::di()->get('frontend.domain')->overrideID($data['domainID']);
+        
         return self::view()->render('frontend/index/index', [
             'page' => $page
         ]);
@@ -69,8 +72,9 @@ class IndexController extends Controller
     {
         $path = self::request()->getUri()->getPath();
         $page = Page::repository()->findOneBy([
-            'route'  => $path,
-            'active' => 1
+            'route'    => $path,
+            'active'   => 1,
+            'domainID' => Core::di()->get('frontend.domain')->getCurrentDomain()->id
         ]);
         
         if ($page instanceof Page)

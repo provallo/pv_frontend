@@ -3,6 +3,8 @@
 namespace ProVallo\Plugins\Frontend\Models\Page;
 
 use Favez\Mvc\ORM\Entity;
+use ProVallo\Plugins\Frontend\Models\Domain\Domain;
+use Validator\Validator;
 
 class Page extends Entity
 {
@@ -16,6 +18,8 @@ class Page extends Entity
     public $id;
     
     public $parentID;
+    
+    public $domainID;
     
     public $active;
     
@@ -32,5 +36,22 @@ class Page extends Entity
     public $created;
     
     public $changed;
+    
+    public function validate ()
+    {
+        Validator::addGlobalRule('domain.exists', function ($fields, $value, $params) {
+            $domainID = (int) $fields['domainID']['value'];
+            $domain   = Domain::repository()->find($domainID);
+            
+            return $domain instanceof Domain;
+        });
+        
+        return [
+            'domainID' => [
+                'required'      => 'The page must be associated to a domain',
+                'domain.exists' => 'The associated domain does not exist'
+            ]
+        ];
+    }
     
 }

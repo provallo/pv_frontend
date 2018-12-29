@@ -32,4 +32,16 @@ class DomainController extends API
         $entity->secure = (int) $input['secure'];
     }
     
+    protected function checkPermission (Entity $entity, $action)
+    {
+        switch ($action)
+        {
+            case 'remove':
+                $pages = (int) self::db()->from('page')->where('domainID = ?', $entity->id)->count();
+                
+                return $pages === 0;
+            break;
+        }
+    }
+    
 }
