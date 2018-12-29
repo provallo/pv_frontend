@@ -42,6 +42,8 @@ class DomainController extends API
                 return $pages === 0;
             break;
         }
+        
+        return true;
     }
     
 }
