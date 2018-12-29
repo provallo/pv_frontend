@@ -53,7 +53,8 @@ class Domain
         $uri    = self::request()->getUri();
         $host   = $uri->getHost();
         $domain = \ProVallo\Plugins\Frontend\Models\Domain\Domain::repository()->findOneBy([
-            'host' => $host
+            'host' => $host,
+            'active' => 1
         ]);
         
         if ($domain instanceof \ProVallo\Plugins\Frontend\Models\Domain\Domain)
@@ -73,7 +74,7 @@ class Domain
         }
         else
         {
-            $id = (int) self::db()->from('domain')->where('hosts LIKE ?', '%' . $host . '%')->fetchColumn();
+            $id = (int) self::db()->from('domain')->where('hosts LIKE ?', '%' . $host . '%')->where('active = 1')->fetchColumn();
             
             if ($id > 0)
             {
