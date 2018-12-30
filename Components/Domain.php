@@ -37,6 +37,15 @@ class Domain
         $this->domain->id = (int) $id;
     }
     
+    public function getAlternativeID ()
+    {
+        $uri    = self::request()->getUri();
+        $host   = $uri->getHost();
+        $id     = (int) self::db()->from('domain')->where('host = ?', $host)->fetchColumn();
+        
+        return $id;
+    }
+    
     /**
      * Lookup for the correct domain, redirect if required or die when no valid
      * domain is matched

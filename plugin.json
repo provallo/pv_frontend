@@ -57,7 +57,10 @@
       "Fix styling issue in domain selector"
     ],
     "1.1.4": [
-      "Fix checking for active in domain-redirect logic"
+      "Fix checking for active in domain-redirect logic",
+      "Register routes correctly",
+      "Rename default controller from Index to Front",
+      "Add Domain::getAlternativeID method"
     ]
   },
   "requires": {

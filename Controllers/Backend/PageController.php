@@ -48,7 +48,7 @@ class PageController extends API
     {
         try
         {
-            $html = self::forward('preview', 'Index', 'frontend');
+            $html = self::forward('preview', 'Front', 'frontend');
         }
         catch (\Exception $ex)
         {

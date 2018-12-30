@@ -6,7 +6,7 @@ use ProVallo\Components\Controller;
 use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Models\Page\Page;
 
-class IndexController extends Controller
+class FrontController extends Controller
 {
     
     public function indexAction ()

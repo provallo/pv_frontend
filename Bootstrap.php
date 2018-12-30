@@ -36,37 +36,36 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         
         if (Core::instance()->getApi() === Core::API_WEB)
         {
-            Core::instance()->registerModule('frontend', [
-                'controller' => [
-                    'namespace'     => 'ProVallo\\Controllers\\Frontend\\',
-                    'class_suffix'  => 'Controller',
-                    'method_suffix' => 'Action'
-                ]
-            ]);
+            Core::events()->subscribe('core.route.register', function () {
+                Core::instance()->registerModule('frontend', [
+                    'controller' => [
+                        'namespace'     => 'ProVallo\\Controllers\\Frontend\\',
+                        'class_suffix'  => 'Controller',
+                        'method_suffix' => 'Action'
+                    ]
+                ]);
     
-            // Register routes
-            Core::instance()->get('/', 'frontend:Index:index');
-    
-            // Override notFoundHandler
-            Core::instance()->getContainer()['notFoundHandler'] = function() {
-                return function (Request $request, Response $response) {
-                    $result = Core::instance()->dispatcher()->dispatch('frontend:Index:index', []);
+                // Override notFoundHandler
+                Core::instance()->getContainer()['notFoundHandler'] = function() {
+                    return function (Request $request, Response $response) {
+                        $result = Core::instance()->dispatcher()->dispatch('frontend:Front:index', []);
             
-                    if (!($result instanceof Response))
-                    {
-                        $response->getBody()->write($result);
+                        if (!($result instanceof Response))
+                        {
+                            $response->getBody()->write($result);
                 
-                        return $response;
-                    }
+                            return $response;
+                        }
             
-                    return $result;
+                        return $result;
+                    };
                 };
-            };
     
-            // Register custom controllers
-            $this->registerController('Frontend', 'Index');
-            $this->registerController('Backend', 'Page');
-            $this->registerController('Backend', 'Domain');
+                // Register custom controllers
+                $this->registerController('Frontend', 'Front');
+                $this->registerController('Backend', 'Page');
+                $this->registerController('Backend', 'Domain');
+            });
     
             // Register custom services
             Core::di()->registerShared('frontend.menu', function() {
