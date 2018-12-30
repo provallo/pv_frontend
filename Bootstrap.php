@@ -8,6 +8,7 @@ use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Commands\FrontendBuildCommand;
 use ProVallo\Plugins\Frontend\Components\Domain;
 use ProVallo\Plugins\Frontend\Components\Menu;
+use ProVallo\Plugins\Frontend\Components\Themes;
 use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -18,8 +19,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public function install ()
     {
         $this->installDB();
-        $this->createThemeDirectory();
-        $this->registerCustomTheme(path($this->getPath(), 'Views'));
+        
+        $themes = new Themes();
+        $themes->ensureDirectory();
+        $themes->register('default', path($this->getPath(), 'Views'));
     }
     
     public function update ($previousVersion)
@@ -112,29 +115,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 ];
             });
         }
-    }
     
-    protected function registerCustomTheme($path, $name = 'default')
-    {
-        $directory = path(Core::path(), Core::instance()->config('view.theme_path'), 'frontend', $name);
-        
-        if (!is_link($directory))
-        {
-            return symlink($path, $directory);
-        }
-        
-        return true;
-    }
-    
-    protected function createThemeDirectory ()
-    {
-        // Create theme directory if not exists
-        $directory = path(Core::path(), Core::instance()->config('view.theme_path'), 'frontend');
-        
-        if (!is_dir($directory))
-        {
-            mkdir($directory, 0777, true);
-        }
+        Core::di()->registerShared('frontend.themes', function () {
+            return new Themes();
+        });
     }
 
 }

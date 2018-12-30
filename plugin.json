@@ -60,7 +60,8 @@
       "Fix checking for active in domain-redirect logic",
       "Register routes correctly",
       "Rename default controller from Index to Front",
-      "Add Domain::getAlternativeID method"
+      "Add Domain::getAlternativeID method",
+      "Use custom component to register themes"
     ]
   },
   "requires": {
