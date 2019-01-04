@@ -23,6 +23,8 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         $themes = new Themes();
         $themes->ensureDirectory();
         $themes->register('default', path($this->getPath(), 'Views'));
+        
+        return true;
     }
     
     public function update ($previousVersion)

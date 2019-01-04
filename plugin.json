@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -62,6 +62,9 @@
       "Rename default controller from Index to Front",
       "Add Domain::getAlternativeID method",
       "Use custom component to register themes"
+    ],
+    "1.1.5": [
+      "Fix installation of plugin"
     ]
   },
   "requires": {
