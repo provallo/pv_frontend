@@ -3,6 +3,7 @@
 namespace ProVallo\Plugins\Frontend\Models\Domain;
 
 use Favez\Mvc\ORM\Entity;
+use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 
 class Domain extends Entity
 {
@@ -10,6 +11,8 @@ class Domain extends Entity
     const SOURCE = 'domain';
     
     public $id;
+    
+    public $themeID;
     
     public $active;
     
@@ -24,5 +27,10 @@ class Domain extends Entity
     public $changed;
     
     public $created;
+    
+    public function initialize ()
+    {
+        $this->belongsTo(Theme::class, 'themeID', 'id')->setName('theme');
+    }
     
 }

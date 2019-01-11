@@ -25,11 +25,12 @@ class DomainController extends API
     {
         $entity->changed = date('Y-m-d H:i:s');
         
-        $entity->active = (int) $input['active'];
-        $entity->label  = $input['label'];
-        $entity->host   = $input['host'];
-        $entity->hosts  = $input['hosts'];
-        $entity->secure = (int) $input['secure'];
+        $entity->active  = (int) $input['active'];
+        $entity->label   = $input['label'];
+        $entity->host    = $input['host'];
+        $entity->hosts   = $input['hosts'];
+        $entity->secure  = (int) $input['secure'];
+        $entity->themeID = (int) $input['themeID'];
     }
     
     protected function checkPermission (Entity $entity, $action)

@@ -10,6 +10,7 @@ use ProVallo\Plugins\Frontend\Components\Domain;
 use ProVallo\Plugins\Frontend\Components\Menu;
 use ProVallo\Plugins\Frontend\Components\Themes;
 use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
+use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -70,6 +71,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 $this->registerController('Frontend', 'Front');
                 $this->registerController('Backend', 'Page');
                 $this->registerController('Backend', 'Domain');
+                $this->registerController('Backend', 'Theme');
             });
     
             // Register custom services
@@ -92,6 +94,22 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             Core::events()->subscribe('controller.pre_dispatch.frontend', function () {
                 Core::di()->get('frontend.domain')->checkRedirect();
             });
+    
+            Core::events()->subscribe('controller.pre_dispatch.frontend.Front', function () {
+                $domain = Core::di()->get('frontend.domain')->getCurrentDomain();
+                
+                if ($domain)
+                {
+                    $themeID = (int) $domain->themeID;
+                    
+                    if ($themeID > 0)
+                    {
+                        $theme = Theme::repository()->find($themeID);
+                        
+                        Core::view()->setTheme($theme->name);
+                    }
+                }
+            });
         }
         
         if (Core::instance()->getApi() === Core::API_CONSOLE)
@@ -104,7 +122,12 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             });
     
             // Register frontend resources
-            Core::events()->subscribe('frontend.register.less', function () {
+            Core::events()->subscribe('frontend.register.less', function (Arguments $args) {
+                if ($args->get('theme')->name !== 'default')
+                {
+                    return [];
+                }
+                
                 return [
                     path($this->getPath(), 'Views/_resources/less/all.less')
                 ];

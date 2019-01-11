@@ -7,7 +7,7 @@
 
     {% block css %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-        <link rel="stylesheet" href="{{ resource_url('css/all.css') }}?_bc={{ timestamp }}">
+        <link rel="stylesheet" href="{{ resource_url('dist/all_' ~ domain.id ~ '.css') }}?_bc={{ timestamp }}">
     {% endblock %}
 
     {% block meta %}
@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="{{ resource_url('js/all.js') }}?_bc={{ timestamp }}"></script>
+    <script type="text/javascript" src="{{ resource_url('dist/all_' ~ domain.id ~ '.js') }}?_bc={{ timestamp }}"></script>
 {% endblock %}
 
 </body>

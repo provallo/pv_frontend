@@ -1,6 +1,7 @@
 export default {
     fields: [
         { name: 'id',      type: 'integer' },
+        { name: 'themeID', type: 'integer' },
         { name: 'active',  type: 'boolean' },
         { name: 'label',   type: 'string', filterable: true },
         { name: 'host',    type: 'string', filterable: true },

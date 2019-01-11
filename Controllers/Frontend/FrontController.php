@@ -20,6 +20,7 @@ class FrontController extends Controller
         
         return self::view()->render('frontend/index/index', [
             'page'      => $page,
+            'domain'    => Core::di()->get('frontend.domain')->getCurrentDomain(),
             'timestamp' => $this->getTimestamp()
         ]);
     }

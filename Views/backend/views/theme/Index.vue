@@ -1,18 +1,18 @@
 <template>
-    <div class="is--page-view view">
+    <div class="is--theme-view view">
         <v-grid ref="grid" :config="gridConfig" @create="create">
             <div class="grid-item user" slot="item" slot-scope="{ model }"
                  :class="{ active: editingModel && editingModel.id === model.id }">
                 <div class="item-meta" @click="edit(model)">
                     <div class="item-label">
-                        {{ model.label }}
+                        {{ model.name }}
                     </div>
                 </div>
-                <div class="item-actions">
+                <!--<div class="item-actions">
                     <div class="item-action" @click="remove(model)">
                         <fa icon="trash"></fa>
                     </div>
-                </div>
+                </div>-->
             </div>
         </v-grid>
         <v-detail :disabled="!editingModel">
@@ -27,34 +27,10 @@
                     <v-input type="text" id="id" :value="editingModel.id.toString()" readonly></v-input>
                 </div>
                 <div class="form-item">
-                    <v-checkbox label="Active" v-model="editingModel.active"></v-checkbox>
-                </div>
-                <div class="form-item">
-                    <v-checkbox label="Secure" v-model="editingModel.secure"></v-checkbox>
-                </div>
-                <div class="form-item">
-                    <label for="label">
-                        Label
+                    <label for="name">
+                        Name
                     </label>
-                    <v-input type="text" id="label" v-model="editingModel.label"></v-input>
-                </div>
-                 <div class="form-item">
-                    <label for="host">
-                        Host
-                    </label>
-                    <v-input type="text" id="host" v-model="editingModel.host"></v-input>
-                </div>
-                 <div class="form-item">
-                    <label for="hosts">
-                        Hosts
-                    </label>
-                    <v-input type="textarea" id="hosts" v-model="editingModel.hosts"></v-input>
-                </div>
-                <div class="form-item">
-                    <label for="theme">
-                        Theme
-                    </label>
-                    <v-select :data="themes" id="theme" v-model="editingModel.themeID" valueField="id" displayField="name"></v-select>
+                    <v-input type="text" id="name" v-model="editingModel.name" readonly></v-input>
                 </div>
             </v-form>
         </v-detail>
@@ -68,7 +44,7 @@ export default {
         
         return {
             gridConfig: {
-                model: me.$models.domain
+                model: me.$models.theme
             },
             formButtons: [
                 {
@@ -77,21 +53,14 @@ export default {
                     name: 'submit'
                 }
             ],
-            editingModel: null,
-            
-            themes: []
+            editingModel: null
         }
-    },
-    mounted () {
-        let me = this
-        
-        me.$models.theme.list().then(themes => me.themes = themes)
     },
     methods: {
         create () {
             let me = this
             
-            me.editingModel = me.$models.domain.create()
+            me.editingModel = me.$models.theme.create()
             me.$nextTick(() => me.$refs.form.reset())
         },
         edit (model) {
@@ -106,9 +75,9 @@ export default {
             let me = this
             
             setLoading(true)
-            me.$models.domain.save(me.editingModel).then(({ success, data, messages }) => {
+            me.$models.theme.save(me.editingModel).then(({ success, data, messages }) => {
                 if (success) {
-                    setMessage('success', 'The domain were saved successfully')
+                    setMessage('success', 'The theme were saved successfully')
                     setLoading(false)
                     
                     me.editingModel.id = data.id
@@ -125,7 +94,7 @@ export default {
         remove (model) {
             let me = this
             
-            me.$models.domain.remove(model).then((success) => {
+            me.$models.theme.remove(model).then((success) => {
                 if (success) {
                     me.$refs.grid.load()
                     
@@ -136,7 +105,7 @@ export default {
                     me.$swal({
                         type: 'error',
                         title: 'Sorry!',
-                        text: 'Unfortunately you are not allowed to delete this domain.'
+                        text: 'Unfortunately you are not allowed to delete this theme.'
                     })
                 }
             }).catch(error => {
