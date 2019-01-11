@@ -1,0 +1,9 @@
+# The technical theme name, must match the directory name
+name: default
+
+# The less files which are located in Views/_resources/less
+less:
+  - all.less
+
+# The javascript files which are located in Views/_resources/js
+javascript: []

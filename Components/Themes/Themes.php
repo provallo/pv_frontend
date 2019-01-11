@@ -1,14 +1,18 @@
 <?php
 
-namespace ProVallo\Plugins\Frontend\Components;
+namespace ProVallo\Plugins\Frontend\Components\Themes;
 
 use Favez\Mvc\DI\Injectable;
-use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 
 class Themes
 {
     use Injectable;
+    
+    /**
+     * @var \ProVallo\Plugins\Frontend\Components\Themes\Compiler
+     */
+    protected $compiler;
     
     public function ensureDirectory ()
     {
@@ -88,6 +92,19 @@ class Themes
     public function getThemeDirectory ()
     {
         return path(self::path(), self::config('view.theme_path'), 'frontend');
+    }
+    
+    /**
+     * @return \ProVallo\Plugins\Frontend\Components\Themes\Compiler
+     */
+    public function getCompiler ()
+    {
+        if (!($this->compiler instanceof Compiler))
+        {
+            $this->compiler = new Compiler($this);
+        }
+        
+        return $this->compiler;
     }
     
 }

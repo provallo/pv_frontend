@@ -121,18 +121,6 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 ];
             });
     
-            // Register frontend resources
-            Core::events()->subscribe('frontend.register.less', function (Arguments $args) {
-                if ($args->get('theme')->name !== 'default')
-                {
-                    return [];
-                }
-                
-                return [
-                    path($this->getPath(), 'Views/_resources/less/all.less')
-                ];
-            });
-    
             // Register custom console commands
             Core::events()->subscribe('console.register', function () {
                 return [
@@ -142,7 +130,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         }
     
         Core::di()->registerShared('frontend.themes', function () {
-            return new Themes();
+            return new Components\Themes\Themes();
         });
     }
 

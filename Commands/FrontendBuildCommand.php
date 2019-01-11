@@ -14,7 +14,7 @@ class FrontendBuildCommand extends Command
 {
     
     /**
-     * @var \ProVallo\Plugins\Frontend\Components\Themes
+     * @var \ProVallo\Plugins\Frontend\Components\Themes\Themes
      */
     protected $themeService;
     
@@ -41,7 +41,7 @@ class FrontendBuildCommand extends Command
             
             if ($domain instanceof Domain)
             {
-                $this->buildThemeFiles($domain);
+                $this->buildThemeFiles($domain, $input, $output);
             }
             else
             {
@@ -63,67 +63,16 @@ class FrontendBuildCommand extends Command
     {
         $output->writeln('Processing "' . $domain->label . '"');
         
+        /** @var Theme $theme */
         $theme = $domain->theme;
         
         if ($theme instanceof Theme)
         {
-            $themeDir    = path($this->themeService->getThemeDirectory(), $theme->name);
-            $resourceDir = path($themeDir, '_resources');
-            
-            if (is_dir($themeDir))
-            {
-                $lessFiles = Core::events()->collect('frontend.register.less', compact('domain', 'theme'));
-                $jsFiles   = Core::events()->collect('frontend.register.javascript', compact('domain', 'theme'));
-                
-                $cssFilename  = path($resourceDir, 'dist', sprintf('all_%d.css', $domain->id));
-                $jsFilename   = path($resourceDir, 'dist', sprintf('all_%d.js', $domain->id));
-                $timeFilename = path($resourceDir, 'dist/timestamp.txt');
-                
-                // Compile multiple LESS into CSS file
-                $css = '';
-                
-                foreach ($lessFiles as $filename)
-                {
-                    $css .= `lessc $filename`;
-                }
-                
-                $javascript = '';
-                
-                foreach ($jsFiles as $filename)
-                {
-                    $javascript .= file_get_contents($filename);
-                }
-                
-                $this->writeFile($cssFilename, $css);
-                $this->writeFile($jsFilename, $javascript);
-                $this->writeFile($timeFilename, time());
-            }
-            else
-            {
-                $output->writeln('  The theme directory does not exists');
-                $output->writeln('  ' . $themeDir);
-            }
+            $this->themeService->getCompiler()->compile($domain->theme, $domain);
         }
         else
         {
             $output->writeln('  The current domain has no theme.');
-        }
-    }
-    
-    protected function writeFile ($filename, $content)
-    {
-        $this->ensureDirectory($filename);
-        
-        file_put_contents($filename, $content);
-    }
-    
-    protected function ensureDirectory ($filename)
-    {
-        $directory = pathinfo($filename, PATHINFO_DIRNAME);
-        
-        if (!file_exists($directory))
-        {
-            mkdir($directory, 0777, true);
         }
     }
     

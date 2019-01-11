@@ -54,7 +54,7 @@ class FrontController extends Controller
     
     protected function getTimestamp ()
     {
-        $filename  = path(self::path(), 'ext/Frontend/Views/_resources/timestamp.txt');
+        $filename  = path(self::path(), 'ext/Frontend/Views/_resources/dist/timestamp.txt');
         $timestamp = time();
         
         if (is_file($filename))
