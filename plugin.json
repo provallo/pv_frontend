@@ -69,6 +69,9 @@
     "1.1.6": [
       "Fix migration 004",
       "Introduce theme management"
+    ],
+    "1.1.7": [
+      "Introduce theme.yaml for better theme file registration"
     ]
   },
   "requires": {
