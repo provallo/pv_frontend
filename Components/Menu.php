@@ -49,7 +49,7 @@ class Menu
             break;
             case Page::TYPE_LINK_EXTERNAL:
                 return [
-                    'link'   => 'frontend/index/openLink?url=' . $page->route,
+                    'link'   => 'frontend/front/openLink?url=' . $page->route,
                     'target' => '_blank'
                 ];
             break;

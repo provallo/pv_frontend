@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -79,6 +79,9 @@
     "1.1.9": [
       "Fix loading CSS/JS in preview",
       "Add option to disable safeMode for Parsedown"
+    ],
+    "1.2.0": [
+      "Fix linking for external sites"
     ]
   },
   "requires": {
