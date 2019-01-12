@@ -4,6 +4,7 @@ namespace ProVallo\Controllers\Frontend;
 
 use ProVallo\Components\Controller;
 use ProVallo\Core;
+use ProVallo\Plugins\Frontend\Bootstrap;
 use ProVallo\Plugins\Frontend\Models\Page\Page;
 
 class FrontController extends Controller
@@ -34,21 +35,25 @@ class FrontController extends Controller
     
     public function previewAction ()
     {
-        $data = self::request()->getParams();
-        $page = [
+        $config = Bootstrap::getConfig();
+        $data   = self::request()->getParams();
+        $page   = [
             'id'    => $data['id'],
             'title' => $data['label'],
             'html'  => $data['data']
         ];
         
         $parser = new \Parsedown();
-        $parser->setSafeMode(true);
+        $parser->setSafeMode($config['parsedown.safe_mode']);
         $page['html'] = $parser->parse($page['html']);
         
         Core::di()->get('frontend.domain')->overrideID($data['domainID']);
         
         return self::view()->render('frontend/index/index', [
-            'page' => $page
+            'page'   => $page,
+            'domain' => [
+                'id' => $data['domainID']
+            ]
         ]);
     }
     
@@ -85,8 +90,9 @@ class FrontController extends Controller
         
         if ($page instanceof Page)
         {
+            $config = Bootstrap::getConfig();
             $parser = new \Parsedown();
-            $parser->setSafeMode(true);
+            $parser->setSafeMode($config['parsedown.safe_mode']);
             $html = $parser->parse($page->data);
             
             return [

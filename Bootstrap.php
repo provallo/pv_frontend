@@ -8,7 +8,6 @@ use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Commands\FrontendBuildCommand;
 use ProVallo\Plugins\Frontend\Components\Domain;
 use ProVallo\Plugins\Frontend\Components\Menu;
-use ProVallo\Plugins\Frontend\Components\Themes;
 use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
 use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 use Slim\Http\Request;
@@ -20,10 +19,11 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public function install ()
     {
         $this->installDB();
+        $this->createConfig();
         
-        $themes = new Themes();
-        $themes->ensureDirectory();
-        $themes->register('default', path($this->getPath(), 'Views'));
+        $themeService = new Components\Themes\Themes();
+        $themeService->ensureDirectory();
+        $themeService->register('default', path($this->getPath(), 'Views'));
         
         return true;
     }
@@ -31,8 +31,20 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public function update ($previousVersion)
     {
         $this->installDB();
+        $this->createConfig();
         
         return true;
+    }
+    
+    protected function createConfig ()
+    {
+        Core::di()->get('backend.config')->create($this, [
+            'parsedown.safe_mode' => [
+                'type' => 'checkbox',
+                'label' => 'Enable safe mode for parsedown',
+                'value' => true
+            ]
+        ]);
     }
     
     public function execute()
@@ -134,4 +146,12 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         });
     }
 
+    public static function getConfig ()
+    {
+        $plugin = Core::plugins()->get('Frontend');
+        $config = Core::di()->get('backend.config')->get($plugin);
+    
+        return $config;
+    }
+    
 }
