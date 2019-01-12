@@ -54,7 +54,12 @@ class FrontController extends Controller
     
     protected function getTimestamp ()
     {
-        $filename  = path(self::path(), 'ext/Frontend/Views/_resources/dist/timestamp.txt');
+        $themeService = Core::di()->get('frontend.themes');
+        $theme        = Core::di()->get('frontend.domain')->getCurrentDomain()->theme;
+        $filename     = path($themeService->getThemeDirectory(), $theme->name, '_resources/dist/timestamp.txt');
+        
+        $themeService->getCompiler()->ensureDirectory($filename);
+        
         $timestamp = time();
         
         if (is_file($filename))
@@ -82,7 +87,7 @@ class FrontController extends Controller
         {
             $parser = new \Parsedown();
             $parser->setSafeMode(true);
-            $html   = $parser->parse($page->data);
+            $html = $parser->parse($page->data);
             
             return [
                 'id'    => $page->id,
