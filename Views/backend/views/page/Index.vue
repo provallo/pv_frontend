@@ -30,17 +30,26 @@
                 <div class="form-item">
                     <v-checkbox name="active" label="Active" v-model="editingModel.active"></v-checkbox>
                 </div>
+                <div class="form-item">
+                    <v-checkbox name="hideTop" label="Hide in Menu" v-model="editingModel.hideTop"></v-checkbox>
+                </div>
                 <div class="form-item" v-if="false">
                     <label for="parentID">
                         Parent
                     </label>
                     <v-input type="text" id="parentID" v-model="editingModel.parentID"></v-input>
                 </div>
-                 <div class="form-item">
+                <div class="form-item">
                     <label for="label">
                         Label
                     </label>
                     <v-input type="text" id="label" v-model="editingModel.label"></v-input>
+                </div>
+                <div class="form-item">
+                    <label for="title">
+                        Title
+                    </label>
+                    <v-input type="text" id="title" v-model="editingModel.title"></v-input>
                 </div>
                 <div class="form-item">
                     <label for="type">

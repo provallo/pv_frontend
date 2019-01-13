@@ -39,7 +39,7 @@ class FrontController extends Controller
         $data   = self::request()->getParams();
         $page   = [
             'id'    => $data['id'],
-            'title' => $data['label'],
+            'title' => $data['title'] ?: $data['label'],
             'html'  => $data['data']
         ];
         
@@ -97,7 +97,7 @@ class FrontController extends Controller
             
             return [
                 'id'    => $page->id,
-                'title' => $page->label,
+                'title' => $page->title ?: $page->label,
                 'html'  => $html
             ];
         }

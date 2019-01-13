@@ -37,8 +37,10 @@ class PageController extends API
         $entity->parentID = -1;
         $entity->domainID = (int) $input['domainID'];
         $entity->active   = (int) $input['active'];
+        $entity->hideTop  = (int) $input['hideTop'];
         $entity->route    = $input['route'];
         $entity->label    = $input['label'];
+        $entity->title    = $input['title'];
         $entity->type     = $input['type'];
         $entity->data     = $input['data'];
         $entity->position = $input['position'];

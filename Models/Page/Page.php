@@ -23,9 +23,13 @@ class Page extends Entity
     
     public $active;
     
+    public $hideTop;
+    
     public $route;
     
     public $label;
+    
+    public $title;
     
     public $type;
     

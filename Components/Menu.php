@@ -28,9 +28,11 @@ class Menu
             $result[] = [
                 'id'       => $item->id,
                 'label'    => $item->label,
+                'title'    => $item->title,
                 'route'    => $this->getRoute($item),
                 'position' => $item->position,
-                'items'    => $this->buildMenu($item->id)
+                'items'    => $this->buildMenu($item->id),
+                'hideTop'  => $item->hideTop
             ];
         }
         

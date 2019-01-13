@@ -33,7 +33,7 @@
                     <ul class="menu">
                         {% set items = getMenu() %}
 
-                        {% for item in items %}
+                        {% for item in items if not item.hideTop %}
                             <li{% if item.id == page.id %} class="active"{% endif %}>
                             <a href="{{ url(item.route.link) }}" target="{{ item.route.target }}">
                                 {{ item.label }}
