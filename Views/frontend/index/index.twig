@@ -46,7 +46,7 @@
         {% endblock %}
         {% block app_body %}
             <div class="content">
-                {% include template_from_string(page.html) %}
+                {{ page.html }}
             </div>
         {% endblock %}
     </div>

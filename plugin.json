@@ -86,6 +86,9 @@
     "1.2.1": [
       "Add support to hide menu items in menu",
       "Add title for pages"
+    ],
+    "1.2.2": [
+      "Fix combination between Twig and Parsedown"
     ]
   },
   "requires": {

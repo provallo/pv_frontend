@@ -40,12 +40,8 @@ class FrontController extends Controller
         $page   = [
             'id'    => $data['id'],
             'title' => $data['title'] ?: $data['label'],
-            'html'  => $data['data']
+            'html'  => $this->renderPage($data['data'])
         ];
-        
-        $parser = new \Parsedown();
-        $parser->setSafeMode($config['parsedown.safe_mode']);
-        $page['html'] = $parser->parse($page['html']);
         
         Core::di()->get('frontend.domain')->overrideID($data['domainID']);
         
@@ -90,19 +86,26 @@ class FrontController extends Controller
         
         if ($page instanceof Page)
         {
-            $config = Bootstrap::getConfig();
-            $parser = new \Parsedown();
-            $parser->setSafeMode($config['parsedown.safe_mode']);
-            $html = $parser->parse($page->data);
-            
             return [
                 'id'    => $page->id,
                 'title' => $page->title ?: $page->label,
-                'html'  => $html
+                'html'  => $this->renderPage($page->data)
             ];
         }
         
         return null;
+    }
+    
+    protected function renderPage ($html)
+    {
+        $template = self::view()->engine()->createTemplate($html);
+        $html     = $template->render([]);
+        
+        $config = Bootstrap::getConfig();
+        $parser = new \Parsedown();
+        $parser->setSafeMode($config['parsedown.safe_mode']);
+        
+        return $parser->parse($html);
     }
     
 }
