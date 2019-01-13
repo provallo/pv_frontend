@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -89,6 +89,9 @@
     ],
     "1.2.2": [
       "Fix combination between Twig and Parsedown"
+    ],
+    "1.2.3": [
+      "Apply page route to view"
     ]
   },
   "requires": {

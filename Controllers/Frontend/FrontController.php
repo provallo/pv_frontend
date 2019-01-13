@@ -40,7 +40,8 @@ class FrontController extends Controller
         $page   = [
             'id'    => $data['id'],
             'title' => $data['title'] ?: $data['label'],
-            'html'  => $this->renderPage($data['data'])
+            'html'  => $this->renderPage($data['data']),
+            'route' => $data['route']
         ];
         
         Core::di()->get('frontend.domain')->overrideID($data['domainID']);
@@ -89,7 +90,8 @@ class FrontController extends Controller
             return [
                 'id'    => $page->id,
                 'title' => $page->title ?: $page->label,
-                'html'  => $this->renderPage($page->data)
+                'html'  => $this->renderPage($page->data),
+                'route' => $page->route
             ];
         }
         
