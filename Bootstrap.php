@@ -107,20 +107,19 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 Core::di()->get('frontend.domain')->checkRedirect();
             });
     
-            Core::events()->subscribe('controller.pre_dispatch.frontend.Front', function () {
-                $domain = Core::di()->get('frontend.domain')->getCurrentDomain();
+            Core::events()->subscribe('frontend.select_theme', function () {
+                $themeID = Core::di()->get('frontend.domain')->getThemeID();
                 
-                if ($domain)
+                if ($themeID > 0)
                 {
-                    $themeID = (int) $domain->themeID;
-                    
-                    if ($themeID > 0)
-                    {
-                        $theme = Theme::repository()->find($themeID);
-                        
-                        Core::view()->setTheme($theme->name);
-                    }
+                    $theme = Theme::repository()->find($themeID);
+            
+                    Core::view()->setTheme($theme->name);
                 }
+            });
+    
+            Core::events()->subscribe('controller.pre_dispatch.frontend.Front', function () {
+                Core::events()->publish('frontend.select_theme');
             });
         }
         

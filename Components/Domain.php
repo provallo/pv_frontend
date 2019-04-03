@@ -14,6 +14,11 @@ class Domain
      */
     protected $domain;
     
+    /**
+     * @var bool
+     */
+    protected $replacedID = false;
+    
     public function __construct ()
     {
         $this->domain  = null;
@@ -35,6 +40,28 @@ class Domain
     public function overrideID ($id)
     {
         $this->domain->id = (int) $id;
+        $this->replacedID = true;
+    }
+    
+    public function replacedID ()
+    {
+        return $this->replacedID;
+    }
+    
+    public function getThemeID ()
+    {
+        if ($this->replacedID())
+        {
+            $themeID = (int) self::db()->from('domain')
+                ->where('id = ?', $this->domain->id)
+                ->select(null)
+                ->select('themeID')
+                ->fetch();
+            
+            return $themeID;
+        }
+        
+        return $this->getCurrentDomain()->themeID;
     }
     
     public function getAlternativeID ()

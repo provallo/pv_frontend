@@ -45,6 +45,7 @@ class FrontController extends Controller
         ];
         
         Core::di()->get('frontend.domain')->overrideID($data['domainID']);
+        Core::events()->publish('frontend.select_theme');
         
         return self::view()->render('frontend/index/index', [
             'page'   => $page,
