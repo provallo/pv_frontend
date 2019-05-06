@@ -57,7 +57,7 @@
                     </label>
                     <v-select id="type" :data="types" displayField="label" valueField="id" v-model="editingModel.type"></v-select>
                 </div>
-                <div class="form-item is--data" v-if="editingModel.type === 1" :class="{ 'full-size': isFullSize }">
+                <div class="form-item is--data" v-if="isEditableType(editingModel.type)" :class="{ 'full-size': isFullSize }">
                     <label for="content">
                         Content
                         <small>
@@ -70,7 +70,7 @@
                     <fa icon="expand-arrows-alt" class="full-size-content" v-else @click="isFullSize = true"></fa>
                 </div>
                 <div class="form-item">
-                    <label for="route" v-if="editingModel.type === 1">
+                    <label for="route" v-if="isEditableType(editingModel.type)">
                         Route
                     </label>
                     <label for="route" v-else>
@@ -85,7 +85,7 @@
                     <v-input type="number" id="position" v-model="editingModel.position"></v-input>
                 </div>
             </v-form>
-            <div class="page-preview" v-if="editingModel && editingModel.type === 1" ref="preview">
+            <div class="page-preview" v-if="editingModel && isEditableType(editingModel.type)" ref="preview">
                 <div class="preview-header">
                     <div class="header-title">
                         Preview:
@@ -138,7 +138,8 @@ export default {
             
             types: [
                 { id: 1, label: 'Content (default)' },
-                { id: 2, label: 'External Link' }
+                { id: 2, label: 'External Link' },
+                { id: 3, label: '404 Page' }
             ],
             
             isFullSize: false,
@@ -253,6 +254,10 @@ export default {
             me.editingModel = null
             
             me.$refs.grid.load()
+        },
+        isEditableType (type) {
+            return type === 1
+                || type === 3
         }
     }
 }

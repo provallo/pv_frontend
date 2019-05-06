@@ -86,6 +86,15 @@ class FrontController extends Controller
             'domainID' => Core::di()->get('frontend.domain')->getCurrentDomain()->id
         ]);
         
+        if (!($page instanceof Page))
+        {
+            $page = Page::repository()->findOneBy([
+                'type'     => 3,
+                'active'   => 1,
+                'domainID' => Core::di()->get('frontend.domain')->getCurrentDomain()->id
+            ]);
+        }
+        
         if ($page instanceof Page)
         {
             return [
