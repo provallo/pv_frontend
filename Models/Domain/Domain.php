@@ -3,6 +3,7 @@
 namespace ProVallo\Plugins\Frontend\Models\Domain;
 
 use Favez\Mvc\ORM\Entity;
+use ProVallo\Plugins\Frontend\Models\Language\Language;
 use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 
 class Domain extends Entity
@@ -11,6 +12,8 @@ class Domain extends Entity
     const SOURCE = 'domain';
     
     public $id;
+    
+    public $languageID;
     
     public $themeID;
     
@@ -30,7 +33,8 @@ class Domain extends Entity
     
     public function initialize ()
     {
-        $this->belongsTo(Theme::class, 'themeID', 'id')->setName('theme');
+        $this->hasOne(Theme::class, 'themeID', 'id')->setName('theme');
+        $this->hasOne(Language::class, 'languageID', 'id')->setName('language');
     }
     
 }

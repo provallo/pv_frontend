@@ -16,6 +16,15 @@ class DomainController extends API
         ];
     }
     
+    protected function map ($row)
+    {
+        $row['id']         = (int) $row['id'];
+        $row['themeID']    = (int) $row['themeID'];
+        $row['languageID'] = (int) $row['languageID'];
+        
+        return $row;
+    }
+    
     protected function setDefaultValues (Entity $entity)
     {
         $entity->created = date('Y-m-d H:i:s');
@@ -25,12 +34,13 @@ class DomainController extends API
     {
         $entity->changed = date('Y-m-d H:i:s');
         
-        $entity->active  = (int) $input['active'];
-        $entity->label   = $input['label'];
-        $entity->host    = $input['host'];
-        $entity->hosts   = $input['hosts'];
-        $entity->secure  = (int) $input['secure'];
-        $entity->themeID = (int) $input['themeID'];
+        $entity->active     = (int) $input['active'];
+        $entity->label      = $input['label'];
+        $entity->host       = $input['host'];
+        $entity->hosts      = $input['hosts'];
+        $entity->secure     = (int) $input['secure'];
+        $entity->themeID    = (int) $input['themeID'];
+        $entity->languageID = (int) $input['languageID'];
     }
     
     protected function checkPermission (Entity $entity, $action)

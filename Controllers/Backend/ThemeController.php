@@ -16,6 +16,13 @@ class ThemeController extends API
         ];
     }
     
+    protected function map ($row)
+    {
+        $row['id'] = (int) $row['id'];
+        
+        return $row;
+    }
+    
     protected function getListQuery ()
     {
         $themes = Core::di()->get('frontend.themes');

@@ -16,6 +16,13 @@ class PageController extends API
         ];
     }
     
+    protected function map ($row)
+    {
+        $row['id'] = (int) $row['id'];
+        
+        return $row;
+    }
+    
     protected function getListQuery ()
     {
         $domainID = (int) self::request()->getParam('domainID');
