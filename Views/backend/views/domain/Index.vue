@@ -64,6 +64,14 @@
                               v-model="editingModel.languageID"
                               valueField="id" displayField="name" />
                 </div>
+                <div class="form-item">
+                    <label for="languages">
+                        Languages
+                    </label>
+                    <v-entity-multi-select :data="languages" id="languages"
+                                           v-model="editingModel.languages"
+                                           valueField="id" displayField="name" />
+                </div>
             </v-form>
         </v-detail>
     </div>
@@ -73,7 +81,7 @@
 export default {
     data() {
         let me = this
-        
+
         return {
             gridConfig: {
                 model: me.$models.domain
@@ -86,41 +94,42 @@ export default {
                 }
             ],
             editingModel: null,
-            
+
             themes: [],
-            languages: [],
+            languages: []
         }
     },
-    mounted () {
+    mounted() {
         let me = this
-        
+
         me.$models.theme.list().then(themes => me.themes = themes)
-        me.$models.language.list().then(languages => me.languages = languages);
+        me.$models.language.list().then(languages => me.languages = languages)
     },
     methods: {
-        create () {
+        create() {
             let me = this
-            
+
             me.editingModel = me.$models.domain.create()
             me.$nextTick(() => me.$refs.form.reset())
         },
-        edit (model) {
+        edit(model) {
             let me = this
-            
+
             me.editingModel = model
             me.$nextTick(() => {
                 me.$refs.form.reset()
             })
+
         },
-        submit ({ setMessage, setLoading, setProgress }) {
+        submit({ setMessage, setLoading, setProgress }) {
             let me = this
-            
+
             setLoading(true)
             me.$models.domain.save(me.editingModel).then(({ success, data, messages }) => {
                 if (success) {
                     setMessage('success', 'The domain were saved successfully')
                     setLoading(false)
-                    
+
                     me.editingModel.id = data.id
                     me.$refs.grid.load()
                 } else {
@@ -132,13 +141,13 @@ export default {
                 setLoading(false)
             })
         },
-        remove (model) {
+        remove(model) {
             let me = this
-            
+
             me.$models.domain.remove(model).then((success) => {
                 if (success) {
                     me.$refs.grid.load()
-                    
+
                     if (me.editingModel && me.editingModel.id === model.id) {
                         me.editingModel = null
                     }

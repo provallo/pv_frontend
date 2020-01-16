@@ -2,9 +2,11 @@
 
 namespace ProVallo\Controllers\Backend;
 
+use Favez\ORM\Entity\ArrayCollection;
 use Favez\ORM\Entity\Entity;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
 use ProVallo\Plugins\Frontend\Models\Domain\Domain;
+use ProVallo\Plugins\Frontend\Models\Language\Language;
 
 class DomainController extends API
 {
@@ -21,6 +23,11 @@ class DomainController extends API
         $row['id']         = (int) $row['id'];
         $row['themeID']    = (int) $row['themeID'];
         $row['languageID'] = (int) $row['languageID'];
+        $row['languages'] = self::db()->from('language l')
+            ->select('l.*')
+            ->leftJoin('domain_language dl ON dl.languageID = l.id')
+            ->where('dl.domainID = ?', $row['id'])
+            ->fetchAll();
         
         return $row;
     }
@@ -41,6 +48,17 @@ class DomainController extends API
         $entity->secure     = (int) $input['secure'];
         $entity->themeID    = (int) $input['themeID'];
         $entity->languageID = (int) $input['languageID'];
+        $entity->languages  = new ArrayCollection(
+            array_map(
+                function ($language) {
+                    $model = Language::create();
+                    $model->set($language);
+            
+                    return $model;
+                },
+                $input['languages']
+            )
+        );
     }
     
     protected function checkPermission (Entity $entity, $action)

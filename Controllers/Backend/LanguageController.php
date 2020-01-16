@@ -4,7 +4,6 @@ namespace ProVallo\Controllers\Backend;
 
 use Favez\ORM\Entity\Entity;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
-use ProVallo\Plugins\Frontend\Models\Domain\Domain;
 use ProVallo\Plugins\Frontend\Models\Language\Language;
 
 class LanguageController extends API

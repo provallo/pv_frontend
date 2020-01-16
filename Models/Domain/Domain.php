@@ -35,6 +35,14 @@ class Domain extends Entity
     {
         $this->hasOne(Theme::class, 'themeID', 'id')->setName('theme');
         $this->hasOne(Language::class, 'languageID', 'id')->setName('language');
+        
+        $this->manyToMany(
+            DomainLanguage::class,
+            'domainID',
+            'languageID',
+            Language::class,
+            'id'
+        )->setName('languages');
     }
     
 }
