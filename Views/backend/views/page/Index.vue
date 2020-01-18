@@ -64,7 +64,7 @@
                             (<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> & <a href="https://twig.symfony.com/" target="_blank">Twig</a> is supported)
                         </small>
                     </label>
-                    <v-input type="textarea" id="content" v-model="editingModel.data"  :style="{ width: formWidth }"></v-input>
+                    <v-input type="textarea" id="content" v-model="editingModel.data" :style="{ width: formWidth }"></v-input>
                     
                     <fa icon="times" class="full-size-content" v-if="isFullSize" @click="isFullSize = false"></fa>
                     <fa icon="expand-arrows-alt" class="full-size-content" v-else @click="isFullSize = true"></fa>
@@ -116,11 +116,11 @@ export default {
     },
     data() {
         let me = this
-        
+
         return {
             gridConfig: {
                 model: me.$models.page,
-                fetchParams () {
+                fetchParams() {
                     return {
                         domainID: me.domainID
                     }
@@ -135,65 +135,65 @@ export default {
                 }
             ],
             editingModel: null,
-            
+
             types: [
                 { id: 1, label: 'Content (default)' },
                 { id: 2, label: 'External Link' },
                 { id: 3, label: '404 Page' }
             ],
-            
+
             isFullSize: false,
             isLoadingPreview: false,
             domainID: null
         }
     },
     computed: {
-        formWidth () {
+        formWidth() {
             let me = this
-    
+
             if (me.isFullSize && me.$refs.preview) {
                 return me.$refs.preview.offsetLeft + 'px'
             }
-            
+
             return 'auto'
         }
     },
     watch: {
-        'editingModel.data' (value, oldValue) {
+        'editingModel.data'(value, oldValue) {
             let me = this
-    
+
             if (oldValue && value !== oldValue) {
                 me.loadPreview()
             }
         }
     },
     methods: {
-        create () {
+        create() {
             let me = this
-            
+
             me.editingModel = me.$models.page.create()
             me.$nextTick(() => me.$refs.form.reset())
         },
-        edit (model) {
+        edit(model) {
             let me = this
-            
+
             me.editingModel = model
             me.$nextTick(() => {
                 me.$refs.form.reset()
                 me.loadPreview()
             })
         },
-        submit ({ setMessage, setLoading, setProgress }) {
+        submit({ setMessage, setLoading, setProgress }) {
             let me = this
-            
+
             me.editingModel.domainID = me.domainID
-            
+
             setLoading(true)
             me.$models.page.save(me.editingModel).then(({ success, data, messages }) => {
                 if (success) {
                     setMessage('success', 'The page were saved successfully')
                     setLoading(false)
-                    
+
                     me.editingModel.id = data.id
                     me.$refs.grid.load()
                 } else {
@@ -205,13 +205,13 @@ export default {
                 setLoading(false)
             })
         },
-        remove (model) {
+        remove(model) {
             let me = this
-            
+
             me.$models.page.remove(model).then((success) => {
                 if (success) {
                     me.$refs.grid.load()
-                    
+
                     if (me.editingModel && me.editingModel.id === model.id) {
                         me.editingModel = null
                     }
@@ -226,36 +226,40 @@ export default {
                 console.log(error)
             })
         },
-        loadPreview () {
+        loadPreview() {
             let me = this
-            
+
             if (!me.editingModel) {
                 return
             }
-            
+
+            if (!me.isEditableType(me.editingModel.type)) {
+                return
+            }
+
             if (me.interval) {
                 clearTimeout(me.interval)
             }
-            
+
             me.interval = setTimeout(() => {
                 me.isLoadingPreview = true
                 me.editingModel.domainID = me.domainID
-                
+
                 me.$http.post('backend/page/preview', me.editingModel).then(response => response.data).then(response => {
                     me.$refs.frame.src = 'data:text/html;charset=utf-8,' + escape(response)
                     me.isLoadingPreview = false
                 })
             }, 250)
         },
-        onDomainChanged (domainID) {
+        onDomainChanged(domainID) {
             let me = this
-    
+
             me.domainID = domainID
             me.editingModel = null
-            
+
             me.$refs.grid.load()
         },
-        isEditableType (type) {
+        isEditableType(type) {
             return type === 1
                 || type === 3
         }
