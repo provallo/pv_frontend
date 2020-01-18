@@ -7,6 +7,12 @@ use Favez\Mvc\ORM\Entity;
 class PageTranslation extends Entity
 {
     
+    const SOURCE = 'page_translation';
+    
+    const SHOULD_UPDATE_WITH_PARENT = true;
+    
+    const SHOULD_REMOVE_WITH_PARENT = true;
+    
     public $id;
     
     public $pageID;
@@ -17,6 +23,6 @@ class PageTranslation extends Entity
     
     public $title;
     
-    public $content;
+    public $data;
     
 }

@@ -95,6 +95,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             Core::di()->registerShared('frontend.domain', function () {
                 return new Domain();
             });
+            
+            Core::di()->registerShared('frontend.translation', function() {
+                return new Components\Translation\Translation();
+            });
     
             // Register view extensions
             Core::events()->subscribe('core.view.init', function (Arguments $args) {

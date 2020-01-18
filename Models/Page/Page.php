@@ -3,15 +3,16 @@
 namespace ProVallo\Plugins\Frontend\Models\Page;
 
 use Favez\Mvc\ORM\Entity;
+use ProVallo\Plugins\Frontend\Components\Translation\TranslatedEntityInterface;
 use ProVallo\Plugins\Frontend\Models\Domain\Domain;
 use Validator\Validator;
 
-class Page extends Entity
+class Page extends Entity implements TranslatedEntityInterface
 {
     
-    const SOURCE = 'page';
+    const SOURCE             = 'page';
     
-    const TYPE_CONTENT = 1;
+    const TYPE_CONTENT       = 1;
     
     const TYPE_LINK_EXTERNAL = 2;
     
@@ -41,9 +42,15 @@ class Page extends Entity
     
     public $changed;
     
+    public function initialize ()
+    {
+        $this->hasMany(PageTranslation::class, 'pageID')->setName('translations');
+    }
+    
     public function validate ()
     {
-        Validator::addGlobalRule('domain.exists', function ($fields, $value, $params) {
+        Validator::addGlobalRule('domain.exists', function ($fields, $value, $params)
+        {
             $domainID = (int) $fields['domainID']['value'];
             $domain   = Domain::repository()->find($domainID);
             
@@ -54,6 +61,19 @@ class Page extends Entity
             'domainID' => [
                 'required'      => 'The page must be associated to a domain',
                 'domain.exists' => 'The associated domain does not exist'
+            ]
+        ];
+    }
+    
+    public static function getTranslationConfig (): array
+    {
+        return [
+            'translationEntity'     => PageTranslation::class,
+            'translationForeignKey' => 'pageID',
+            'fields'                => [
+                'label',
+                'title',
+                'data'
             ]
         ];
     }

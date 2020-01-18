@@ -25,6 +25,8 @@ class Menu
         
         foreach ($items as $item)
         {
+            Core::di()->get('frontend.translation')->translateEntity($item);
+            
             $result[] = [
                 'id'       => $item->id,
                 'label'    => $item->label,

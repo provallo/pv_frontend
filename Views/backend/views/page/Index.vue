@@ -6,7 +6,7 @@
                  :class="{ active: editingModel && editingModel.id === model.id }">
                 <div class="item-meta" @click="edit(model)">
                     <div class="item-label">
-                        {{ model.label }}
+                        {{ getTranslated(model).label }}
                     </div>
                 </div>
                 <div class="item-actions">
@@ -43,13 +43,13 @@
                     <label for="label">
                         Label
                     </label>
-                    <v-input type="text" id="label" v-model="editingModel.label"></v-input>
+                    <v-input type="text" id="label" v-model="getTranslated(editingModel).label"></v-input>
                 </div>
                 <div class="form-item">
                     <label for="title">
                         Title
                     </label>
-                    <v-input type="text" id="title" v-model="editingModel.title"></v-input>
+                    <v-input type="text" id="title" v-model="getTranslated(editingModel).title"></v-input>
                 </div>
                 <div class="form-item">
                     <label for="type">
@@ -64,7 +64,7 @@
                             (<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> & <a href="https://twig.symfony.com/" target="_blank">Twig</a> is supported)
                         </small>
                     </label>
-                    <v-input type="textarea" id="content" v-model="editingModel.data" :style="{ width: formWidth }"></v-input>
+                    <v-input type="textarea" id="content" v-model="getTranslated(editingModel).data" :style="{ width: formWidth }"></v-input>
                     
                     <fa icon="times" class="full-size-content" v-if="isFullSize" @click="isFullSize = false"></fa>
                     <fa icon="expand-arrows-alt" class="full-size-content" v-else @click="isFullSize = true"></fa>
@@ -144,7 +144,8 @@ export default {
 
             isFullSize: false,
             isLoadingPreview: false,
-            domainID: null
+            domainID: null,
+            languageID: null
         }
     },
     computed: {
@@ -195,6 +196,8 @@ export default {
                     setLoading(false)
 
                     me.editingModel.id = data.id
+                    me.editingModel.translations = data.translations
+
                     me.$refs.grid.load()
                 } else {
                     setMessage('error', messages[0])
@@ -245,23 +248,34 @@ export default {
                 me.isLoadingPreview = true
                 me.editingModel.domainID = me.domainID
 
-                me.$http.post('backend/page/preview', me.editingModel).then(response => response.data).then(response => {
+                let model = { ...me.editingModel }
+
+                model.data = me.getTranslated(model).data
+
+                me.$http.post('backend/page/preview', model).then(response => response.data).then(response => {
                     me.$refs.frame.src = 'data:text/html;charset=utf-8,' + escape(response)
                     me.isLoadingPreview = false
                 })
             }, 250)
         },
-        onDomainChanged(domainID) {
+        onDomainChanged(domainID, languageID) {
             let me = this
 
-            me.domainID = domainID
-            me.editingModel = null
+            me.languageID = languageID
 
-            me.$refs.grid.load()
+            if (me.domainID !== domainID) {
+                me.domainID = domainID
+                me.editingModel = null
+
+                me.$refs.grid.load()
+            }
         },
         isEditableType(type) {
             return type === 1
                 || type === 3
+        },
+        getTranslated(model) {
+            return model.translations.find(t => t.languageID === this.languageID) || model
         }
     }
 }

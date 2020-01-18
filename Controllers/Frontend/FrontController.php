@@ -12,18 +12,32 @@ class FrontController extends Controller
     
     public function indexAction ()
     {
-        $page = $this->getPage();
+        $page      = $this->getPage();
+        $languages = Core::di()->get('frontend.translation')->getLanguages();
         
         if (empty($page))
         {
-            return self::view()->render('frontend/index/404');
+            return self::view()->render('frontend/index/404', [
+                'languages' => $languages
+            ]);
         }
-        
+
         return self::view()->render('frontend/index/index', [
             'page'      => $page,
             'domain'    => Core::di()->get('frontend.domain')->getCurrentDomain(),
-            'timestamp' => $this->getTimestamp()
+            'timestamp' => $this->getTimestamp(),
+            'languages' => $languages
         ]);
+    }
+    
+    public function selectLanguageAction()
+    {
+        $languageID = (int) self::request()->getParam('id');
+    
+        Core::di()->get('frontend.translation')->setLanguage($languageID);
+        
+        return self::response()
+            ->withRedirect(self::request()->getServerParam('HTTP_REFERER', '/'));
     }
     
     public function openLinkAction ()
@@ -35,7 +49,6 @@ class FrontController extends Controller
     
     public function previewAction ()
     {
-        $config = Bootstrap::getConfig();
         $data   = self::request()->getParams();
         $page   = [
             'id'    => $data['id'],
@@ -51,7 +64,8 @@ class FrontController extends Controller
             'page'   => $page,
             'domain' => [
                 'id' => $data['domainID']
-            ]
+            ],
+            'languages' => Core::di()->get('frontend.translation')->getLanguages()
         ]);
     }
     
@@ -97,6 +111,8 @@ class FrontController extends Controller
         
         if ($page instanceof Page)
         {
+            Core::di()->get('frontend.translation')->translateEntity($page);
+            
             return [
                 'id'    => $page->id,
                 'title' => $page->title ?: $page->label,
@@ -108,7 +124,7 @@ class FrontController extends Controller
         return null;
     }
     
-    protected function renderPage ($html)
+    protected function renderPage ($html): string
     {
         $template = self::view()->engine()->createTemplate($html);
         $html     = $template->render([]);

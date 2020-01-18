@@ -42,6 +42,17 @@
                         {% endfor %}
                     </ul>
                 {% endblock %}
+                {% block app_header_language_select %}
+                    <form action="{{ url('frontend/front/selectLanguage') }}" method="post">
+                        <select class="language-select" name="id" onchange="this.parentNode.submit()">
+                            {% for language in languages %}
+                                <option value="{{ language.id }}"{% if language.selected %} selected{% endif %}>
+                                    {{ language.isoCode|upper }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                {% endblock %}
             </div>
         {% endblock %}
         {% block app_body %}

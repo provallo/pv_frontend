@@ -23,11 +23,16 @@ class DomainController extends API
         $row['id']         = (int) $row['id'];
         $row['themeID']    = (int) $row['themeID'];
         $row['languageID'] = (int) $row['languageID'];
-        $row['languages'] = self::db()->from('language l')
+        $row['languages']  = self::db()->from('language l')
             ->select('l.*')
             ->leftJoin('domain_language dl ON dl.languageID = l.id')
             ->where('dl.domainID = ?', $row['id'])
             ->fetchAll();
+        
+        foreach ($row['languages'] as &$language)
+        {
+            $language['id'] = (int) $language['id'];
+        }
         
         return $row;
     }
@@ -48,12 +53,15 @@ class DomainController extends API
         $entity->secure     = (int) $input['secure'];
         $entity->themeID    = (int) $input['themeID'];
         $entity->languageID = (int) $input['languageID'];
+        
+        // todo: Implement and call ArrayCollection::fromArray($input['languages'], Language::class);
         $entity->languages  = new ArrayCollection(
             array_map(
-                function ($language) {
+                function ($language)
+                {
                     $model = Language::create();
                     $model->set($language);
-            
+                    
                     return $model;
                 },
                 $input['languages']

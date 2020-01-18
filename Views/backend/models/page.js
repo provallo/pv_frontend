@@ -12,6 +12,7 @@ export default {
         { name: 'position', type: 'integer' },
         { name: 'created', type: 'string' },
         { name: 'changed', type: 'string' },
+        { name: 'translations', type: 'array' }
     ],
     proxy: {
         list: 'backend/page/list',
