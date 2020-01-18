@@ -33,8 +33,8 @@ class Domain extends Entity
     
     public function initialize ()
     {
-        $this->hasOne(Theme::class, 'themeID', 'id')->setName('theme');
-        $this->hasOne(Language::class, 'languageID', 'id')->setName('language');
+        $this->hasOne(Theme::class, 'id', 'themeID')->setName('theme');
+        $this->hasOne(Language::class, 'id', 'languageID')->setName('language');
         
         $this->manyToMany(
             DomainLanguage::class,
