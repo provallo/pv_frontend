@@ -99,7 +99,7 @@
     ]
   },
   "requires": {
-    "Backend": "1.7.0"
+    "Backend": "1.7.1"
   },
   "package": {
     "channel": "stable",
