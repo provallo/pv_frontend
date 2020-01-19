@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -102,6 +102,9 @@
     ],
     "1.3.2": [
       "Hide language select if only one language is available"
+    ],
+    "1.3.3": [
+      "Fix creating of translatable entities Fix live preview"
     ]
   },
   "requires": {
