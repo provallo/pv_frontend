@@ -1,6 +1,6 @@
 <template>
     <div class="is--page-view view">
-        <v-domain-selector @change="onDomainChanged" />
+        <v-domain-selector @change="onDomainChanged" ref="domainSelector"/>
         <v-grid ref="grid" :config="gridConfig" @create="create">
             <div class="grid-item user" slot="item" slot-scope="{ model }"
                  :class="{ active: editingModel && editingModel.id === model.id }">
@@ -160,11 +160,10 @@ export default {
         }
     },
     watch: {
-        'editingModel.data'(value, oldValue) {
-            let me = this
-
-            if (oldValue && value !== oldValue) {
-                me.loadPreview()
+        'editingModel.translations': {
+            deep: true,
+            handler () {
+                this.loadPreview()
             }
         }
     },
@@ -173,6 +172,16 @@ export default {
             let me = this
 
             me.editingModel = me.$models.page.create()
+            
+            me.$refs.domainSelector.languages.forEach(language => {
+                me.editingModel.translations.push({
+                    languageID: language.id,
+                    label: '',
+                    title: '',
+                    data: ''
+                })
+            })
+
             me.$nextTick(() => me.$refs.form.reset())
         },
         edit(model) {
