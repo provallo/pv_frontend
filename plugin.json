@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -96,6 +96,9 @@
     "1.3.0": [
       "Add translation support",
       "Add support for custom 404 pages"
+    ],
+    "1.3.1": [
+      "Update requirement of Backend to 1.7.1"
     ]
   },
   "requires": {
