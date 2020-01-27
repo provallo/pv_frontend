@@ -48,7 +48,7 @@
                             <select class="language-select" name="id" onchange="this.parentNode.submit()">
                                 {% for language in languages %}
                                     <option value="{{ language.id }}"{% if language.selected %} selected{% endif %}>
-                                        {{ language.isoCode|upper }}
+                                        {{ ('language.select.iso_' ~ language.id)|s(language.isoCode|upper) }}
                                     </option>
                                 {% endfor %}
                             </select>

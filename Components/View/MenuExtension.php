@@ -7,19 +7,32 @@ use ProVallo\Core;
 class MenuExtension extends \Twig_Extension
 {
     
-    public function getName()
+    public function getName ()
     {
         return 'Menu ViewExtension';
     }
     
-    public function getFunctions()
+    public function getFilters ()
+    {
+        return [
+            new \Twig_SimpleFilter('s', [
+                $this,
+                'snippetFilter'
+            ])
+        ];
+    }
+    
+    public function getFunctions ()
     {
         $functions = ['getMenu'];
         $result    = [];
         
-        foreach($functions as $functionName)
+        foreach ($functions as $functionName)
         {
-            $result[] = new \Twig_SimpleFunction($functionName, [$this, $functionName . 'Function']);
+            $result[] = new \Twig_SimpleFunction($functionName, [
+                $this,
+                $functionName . 'Function'
+            ]);
         }
         
         return $result;
@@ -31,6 +44,11 @@ class MenuExtension extends \Twig_Extension
         $menuService = Core::di()->get('frontend.menu');
         
         return $menuService->generate();
+    }
+    
+    public function snippetFilter ($value, $defaultValue = '', array $params = [])
+    {
+        return Core::di()->get('frontend.snippet')->get($value, $defaultValue, $params);
     }
     
 }

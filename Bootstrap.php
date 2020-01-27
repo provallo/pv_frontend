@@ -8,6 +8,7 @@ use ProVallo\Core;
 use ProVallo\Plugins\Frontend\Commands\FrontendBuildCommand;
 use ProVallo\Plugins\Frontend\Components\Domain;
 use ProVallo\Plugins\Frontend\Components\Menu;
+use ProVallo\Plugins\Frontend\Components\Snippet;
 use ProVallo\Plugins\Frontend\Components\View\MenuExtension;
 use ProVallo\Plugins\Frontend\Models\Theme\Theme;
 use Slim\Http\Request;
@@ -99,6 +100,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             
             Core::di()->registerShared('frontend.translation', function() {
                 return new Components\Translation\Translation();
+            });
+            
+            Core::di()->registerShared('frontend.snippet', function() {
+                return new Snippet();
             });
     
             // Register view extensions
