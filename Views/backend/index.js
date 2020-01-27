@@ -21,6 +21,11 @@ export default function () {
             name: 'language.index',
             path: '/config/languages',
             component: require('./views/language/Index.vue').default
+        },
+        {
+            name: 'snippet.index',
+            path: '/config/snippets',
+            component: require('./views/snippet/Index.vue').default
         }
     ])
 
@@ -28,6 +33,7 @@ export default function () {
     ProVallo.$models.domain = createModel(require('./models/domain').default)
     ProVallo.$models.theme = createModel(require('./models/theme').default)
     ProVallo.$models.language = createModel(require('./models/language').default)
+    ProVallo.$models.snippet = createModel(require('./models/snippet').default)
 
     require('./assets/less/all.less')
 }

@@ -85,6 +85,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 $this->registerController('Backend', 'Domain');
                 $this->registerController('Backend', 'Theme');
                 $this->registerController('Backend', 'Language');
+                $this->registerController('Backend', 'Snippet');
             });
     
             // Register custom services
