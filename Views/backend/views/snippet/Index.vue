@@ -1,6 +1,5 @@
 <template>
     <div class="is--page-view view">
-        <v-language-selector @change="onLanguageChanged" ref="languageSelector"/>
         <v-grid ref="grid" :config="gridConfig" @create="create">
             <div class="grid-item user" slot="item" slot-scope="{ model }"
                  :class="{ active: editingModel && editingModel.id === model.id }">
@@ -11,7 +10,7 @@
                 </div>
                 <div class="item-actions">
                     <div class="item-action" @click="remove(model)">
-                        <fa icon="trash"></fa>
+                        <fa icon="trash" />
                     </div>
                 </div>
             </div>
@@ -25,19 +24,29 @@
                     <label for="id">
                         ID
                     </label>
-                    <v-input type="text" id="id" :value="editingModel.id.toString()" readonly></v-input>
+                    <v-input type="text" id="id" :value="editingModel.id.toString()" readonly />
                 </div>
                 <div class="form-item">
                     <label for="name">
                         Name
                     </label>
-                    <v-input type="text" id="name" v-model="editingModel.name"></v-input>
+                    <v-input type="text" id="name" v-model="editingModel.name" />
                 </div>
-                <div class="form-item">
-                    <label for="value">
-                        Value
-                    </label>
-                    <v-input type="text" id="value" v-model="getTranslated(editingModel).value"></v-input>
+                <div class="values-container">
+                    <div class="domain-container" v-for="domain in domains">
+                        <div class="domain-label">
+                            {{ domain.label }} ({{ domain.host }})
+                        </div>
+                        <div class="language-container" v-for="language in domain.languages">
+                            <div class="form-item">
+                                <label :for="'value' + domain.id + '' + language.id">
+                                    {{ language.name }}
+                                </label>
+                                <v-input type="textarea" :id="'value' + domain.id + '' + language.id"
+                                         v-model="getValue(domain.id, language.id).value" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </v-form>
         </v-detail>
@@ -66,8 +75,13 @@ export default {
                 }
             ],
             editingModel: null,
-            languageID: null
+            domains: []
         }
+    },
+    mounted() {
+        const me = this;
+        
+        me.$models.domain.list().then(domains => me.domains = domains);
     },
     methods: {
         create() {
@@ -75,12 +89,12 @@ export default {
 
             me.editingModel = me.$models.snippet.create()
             
-            me.$refs.languageSelector.languages.forEach(language => {
+            /*me.$refs.languageSelector.languages.forEach(language => {
                 me.editingModel.values.push({
                     languageID: language.id,
                     value: '',
                 })
-            })
+            })*/
 
             me.$nextTick(() => me.$refs.form.reset())
         },
@@ -135,13 +149,11 @@ export default {
                 console.log(error)
             })
         },
-        onLanguageChanged(languageID) {
-            let me = this
+        getValue (domainID, languageID) {
+            const me = this;
             
-            me.languageID = languageID
-        },
-        getTranslated(model) {
-            return model.values.find(t => t.languageID === this.languageID) || model
+            return me.editingModel.values
+                .find(v => v.domainID === domainID && v.languageID === languageID);
         }
     }
 }

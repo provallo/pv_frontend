@@ -119,3 +119,37 @@
     }
   }
 }
+
+.values-container {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  div.domain-container {
+    padding: 10px;
+    margin: 0 0 10px 0;
+    border-bottom: 1px dashed #ccc;
+    &:last-child {
+      margin: 0;
+      border: 0 none;
+    }
+    div.domain-label {
+      font-size: 18px;
+      margin: 0 0 5px 0;
+    }
+    div.language-container {
+      &:last-child div.form-item {
+        margin: 0;
+      }
+      div.form-item {
+        display: flex;
+        flex-direction: row;
+        margin: 0 0 5px 0;
+        label {
+          min-width: 100px;
+        }
+        .form-input {
+          flex: 1;
+        }
+      }
+    }
+  }
+}

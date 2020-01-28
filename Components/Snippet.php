@@ -13,9 +13,19 @@ class Snippet
     protected $translation;
     
     /**
+     * @var \ProVallo\Plugins\Frontend\Components\Domain
+     */
+    protected $domain;
+    
+    /**
      * @var integer
      */
     protected $languageID;
+    
+    /**
+     * @var integer
+     */
+    protected $domainID;
     
     /**
      * @var array
@@ -25,7 +35,9 @@ class Snippet
     public function __construct ()
     {
         $this->translation = Core::di()->get('frontend.translation');
+        $this->domain      = Core::di()->get('frontend.domain');
         $this->languageID  = $this->translation->getLanguage();
+        $this->domainID    = $this->domain->getCurrentDomain()->id;
         $this->snippets    = [];
         
         $this->loadSnippets();
@@ -50,6 +62,7 @@ class Snippet
             $snippet->name   = $key;
             $snippet->values = [
                 [
+                    'domainID'   => $this->domainID,
                     'languageID' => $this->languageID,
                     'value'      => $defaultValue
                 ]
@@ -71,6 +84,7 @@ class Snippet
         $values = Core::db()->from('snippet s')
             ->select(null)->select('s.id, s.name, v.value')
             ->leftJoin('snippet_value v ON v.snippetID = s.id')
+            ->where('v.domainID = ?', $this->domainID)
             ->where('v.languageID = ?', $this->languageID)
             ->execute()
             ->fetchAll(\PDO::FETCH_ASSOC);

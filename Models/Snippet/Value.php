@@ -19,6 +19,8 @@ class Value extends Entity
     
     public $snippetID;
     
+    public $domainID;
+    
     public $languageID;
     
     public $value;

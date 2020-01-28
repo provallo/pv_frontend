@@ -4,7 +4,7 @@ namespace ProVallo\Controllers\Backend;
 
 use Favez\ORM\Entity\Entity;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
-use ProVallo\Plugins\Frontend\Models\Language\Language;
+use ProVallo\Plugins\Frontend\Models\Domain\Domain;
 use ProVallo\Plugins\Frontend\Models\Snippet\Snippet;
 use ProVallo\Plugins\Frontend\Models\Snippet\Value;
 
@@ -33,31 +33,39 @@ class SnippetController extends API
             // Load available values
             $row['values'] = $snippet->values->toArray();
             
-            // Add pseudo values for every available language
-            $languages = Language::repository()->findAll();
+            $domains = Domain::repository()->findAll();
             
-            foreach ($languages as $language)
+            foreach ($domains as $domain)
             {
-                foreach ($row['values'] as $value)
+                $languages = $domain->languages;
+                
+                foreach ($languages as $language)
                 {
-                    if ($value['languageID'] === $language->id)
+                    foreach ($row['values'] as $value)
                     {
-                        continue 2;
+                        if ($value['languageID'] === $language->id
+                            && $value['domainID'] === $domain->id
+                        )
+                        {
+                            continue 3;
+                        }
                     }
+                    
+                    $value             = Value::create();
+                    $value->snippetID  = $row['id'];
+                    $value->domainID   = $domain->id;
+                    $value->languageID = $language->id;
+                    $value->value      = '';
+                    
+                    $row['values'][] = $value->toArray();
                 }
-                
-                $value             = Value::create();
-                $value->snippetID  = $row['id'];
-                $value->languageID = $language->id;
-                $value->value      = '';
-                
-                $row['values'][] = $value->toArray();
             }
             
             foreach ($row['values'] as &$value)
             {
                 $value['id']         = (int) $value['id'];
                 $value['languageID'] = (int) $value['languageID'];
+                $value['domainID']   = (int) $value['domainID'];
                 $value['snippetID']  = (int) $value['snippetID'];
             }
         }
