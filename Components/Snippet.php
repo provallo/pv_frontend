@@ -3,6 +3,7 @@
 namespace ProVallo\Plugins\Frontend\Components;
 
 use ProVallo\Core;
+use ProVallo\Plugins\Frontend\Models\Snippet\Snippet as SnippetModel;
 
 class Snippet
 {
@@ -53,13 +54,21 @@ class Snippet
      * @param array  $params
      *
      * @return string
+     * @throws \Exception
      */
     public function get (string $key, string $defaultValue = '', array $params = []): string
     {
         if (!isset($this->snippets[$key]))
         {
-            $snippet         = \ProVallo\Plugins\Frontend\Models\Snippet\Snippet::create();
-            $snippet->name   = $key;
+            $repository = SnippetModel::repository();
+            $snippet    = $repository->findOneBy(['name' => $key]);
+            
+            if (!($snippet instanceof SnippetModel))
+            {
+                $snippet       = SnippetModel::create();
+                $snippet->name = $key;
+            }
+            
             $snippet->values = [
                 [
                     'domainID'   => $this->domainID,
@@ -67,9 +76,9 @@ class Snippet
                     'value'      => $defaultValue
                 ]
             ];
-    
+            
             $snippet->save();
-    
+            
             $this->snippets[$key] = $defaultValue;
         }
         
