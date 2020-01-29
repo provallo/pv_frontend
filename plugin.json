@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "changelog": {
     "1.0.0": [
       "Add default theme"
@@ -114,6 +114,9 @@
     ],
     "1.4.1": [
       "Fix snippet crud"
+    ],
+    "1.4.2": [
+      "Fix duplication of snippets per language/domain"
     ]
   },
   "requires": {
