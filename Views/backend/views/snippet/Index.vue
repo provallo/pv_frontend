@@ -89,12 +89,15 @@ export default {
 
             me.editingModel = me.$models.snippet.create()
             
-            /*me.$refs.languageSelector.languages.forEach(language => {
-                me.editingModel.values.push({
-                    languageID: language.id,
-                    value: '',
+            me.domains.forEach(domain => {
+                domain.languages.forEach(language => {
+                    me.editingModel.values.push({
+                        domainID: domain.id,
+                        languageID: language.id,
+                        value: ''
+                    })
                 })
-            })*/
+            })
 
             me.$nextTick(() => me.$refs.form.reset())
         },

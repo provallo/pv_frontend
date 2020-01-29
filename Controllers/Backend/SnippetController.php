@@ -47,7 +47,7 @@ class SnippetController extends API
                             && $value['domainID'] === $domain->id
                         )
                         {
-                            continue 3;
+                            continue 2;
                         }
                     }
                     
